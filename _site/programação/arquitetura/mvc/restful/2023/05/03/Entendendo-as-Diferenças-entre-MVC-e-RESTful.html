@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Entendendo as Diferenças entre MVC e RESTful: Conceitos e Aplicações | ItaloCobainsBlog</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Entendendo as Diferenças entre MVC e RESTful: Conceitos e Aplicações" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Olá! Neste post, vamos discutir as diferenças entre os conceitos de Model-View-Controller (MVC) e RESTful. Ambos são importantes em desenvolvimento de software, especialmente no contexto de aplicações web, mas têm propósitos e funcionalidades diferentes. Vamos aprender sobre cada um deles e como eles são aplicados na prática." />
+<meta property="og:description" content="Olá! Neste post, vamos discutir as diferenças entre os conceitos de Model-View-Controller (MVC) e RESTful. Ambos são importantes em desenvolvimento de software, especialmente no contexto de aplicações web, mas têm propósitos e funcionalidades diferentes. Vamos aprender sobre cada um deles e como eles são aplicados na prática." />
+<link rel="canonical" href="http://localhost:4000/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful.html" />
+<meta property="og:url" content="http://localhost:4000/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful.html" />
+<meta property="og:site_name" content="ItaloCobainsBlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-05-03T06:00:08-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Entendendo as Diferenças entre MVC e RESTful: Conceitos e Aplicações" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-05-03T06:00:08-03:00","datePublished":"2023-05-03T06:00:08-03:00","description":"Olá! Neste post, vamos discutir as diferenças entre os conceitos de Model-View-Controller (MVC) e RESTful. Ambos são importantes em desenvolvimento de software, especialmente no contexto de aplicações web, mas têm propósitos e funcionalidades diferentes. Vamos aprender sobre cada um deles e como eles são aplicados na prática.","headline":"Entendendo as Diferenças entre MVC e RESTful: Conceitos e Aplicações","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful.html"},"url":"http://localhost:4000/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="ItaloCobainsBlog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">ItaloCobainsBlog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/sobre/">Sobre</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Entendendo as Diferenças entre MVC e RESTful: Conceitos e Aplicações</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-05-03T06:00:08-03:00" itemprop="datePublished">May 3, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Olá! Neste post, vamos discutir as diferenças entre os conceitos de <strong>Model-View-Controller (MVC)</strong> e <strong>RESTful</strong>. Ambos são importantes em desenvolvimento de software, especialmente no contexto de aplicações web, mas têm propósitos e funcionalidades diferentes. Vamos aprender sobre cada um deles e como eles são aplicados na prática.</p>
+
+<h2 id="o-que-é-mvc">O que é MVC?</h2>
+
+<p>O Model-View-Controller (MVC) é um padrão de arquitetura de software que separa a lógica de negócio, a apresentação e o controle das aplicações em três componentes distintos:</p>
+
+<ol>
+  <li><strong>Model</strong>: Representa os dados e a lógica de negócio da aplicação. É responsável por armazenar, processar e manipular os dados.</li>
+  <li><strong>View</strong>: É a camada de apresentação responsável por exibir os dados ao usuário. As views recebem informações do model e as apresentam de forma visual.</li>
+  <li><strong>Controller</strong>: Gerencia a comunicação entre a Model e a View. Ele recebe entradas do usuário através da View, processa as solicitações e atualiza o Model e a View de acordo.</li>
+</ol>
+
+<p>O objetivo principal do padrão MVC é separar as responsabilidades e facilitar a manutenção e escalabilidade do projeto.</p>
+
+<h2 id="o-que-é-restful">O que é RESTful?</h2>
+
+<p>RESTful é um conjunto de princípios e práticas para a construção de aplicações web que seguem os princípios da arquitetura REST (Representational State Transfer). As aplicações RESTful são projetadas para funcionar bem com a web, aproveitando os protocolos e convenções existentes, como HTTP e URL.</p>
+
+<p>As principais características das aplicações RESTful incluem:</p>
+
+<ol>
+  <li><strong>Protocolo cliente-servidor</strong>: Separação das responsabilidades entre o cliente (interface do usuário) e o servidor (lógica de negócio e armazenamento de dados), permitindo que ambos evoluam de forma independente.</li>
+  <li><strong>Stateless</strong>: Cada requisição do cliente para o servidor deve conter todas as informações necessárias para entender e processar a solicitação. O servidor não deve armazenar informações sobre o estado do cliente entre as solicitações.</li>
+  <li><strong>Cacheable</strong>: As respostas do servidor podem ser armazenadas em cache no cliente para melhorar o desempenho e a eficiência.</li>
+  <li><strong>Sistema em camadas</strong>: A arquitetura pode ser composta por várias camadas hierárquicas, com cada camada tendo uma responsabilidade específica.</li>
+</ol>
+
+<p>RESTful é frequentemente usado para criar APIs (Application Programming Interfaces) que expõem funcionalidades e dados de aplicações web de maneira padronizada e fácil de usar.</p>
+
+<h2 id="diferenças-entre-mvc-e-restful">Diferenças entre MVC e RESTful</h2>
+
+<p>Embora tanto o MVC quanto o RESTful sejam importantes no desenvolvimento de aplicações web, eles têm propósitos diferentes e não devem ser confundidos. Aqui estão algumas das principais diferenças:</p>
+
+<ol>
+  <li>
+    <p><strong>Propósito</strong>: O MVC é um padrão de arquitetura de software que ajuda a organizar e estruturar a lógica de negócio, a apresentação e o controle da aplicação. Por outro lado, RESTful é uma abordagem para a construção de aplicações web que seguem os princípios da arquitetura REST, focando principalmente na comunicação entre cliente e servidor e na organização das APIs.</p>
+  </li>
+  <li>
+    <p><strong>Componentes</strong>: O MVC é composto por três componentes principais: Model, View e Controller. Já as aplicações RESTful não têm uma estrutura de componentes específica; em vez disso, seguem um conjunto de princípios e práticas para a construção de aplicações web.</p>
+  </li>
+  <li>
+    <p><strong>Aplicação</strong>: O MVC é geralmente usado no desenvolvimento de aplicações web, onde a separação de responsabilidades entre os componentes pode ajudar a simplificar e organizar o código. Por outro lado, RESTful é aplicado principalmente na construção de APIs que expõem funcionalidades e dados de aplicações web de maneira padronizada e fácil de usar.</p>
+  </li>
+  <li>
+    <p><strong>Comunicação</strong>: O MVC lida com a comunicação entre os componentes internos da aplicação (Model, View e Controller), enquanto o RESTful foca na comunicação entre cliente e servidor através de protocolos e convenções da web, como HTTP e URL.</p>
+  </li>
+</ol>
+
+<h2 id="conclusão">Conclusão</h2>
+
+<p>MVC e RESTful são conceitos importantes no desenvolvimento de aplicações web, mas servem a propósitos diferentes e têm diferentes áreas de aplicação. O MVC é um padrão de arquitetura que ajuda a organizar o código e facilita a manutenção e escalabilidade do projeto, enquanto RESTful é uma abordagem para a construção de aplicações web e APIs que seguem os princípios da arquitetura REST.</p>
+
+<p>Entender a diferença entre esses dois conceitos e saber como aplicá-los em seus projetos é fundamental para criar aplicações web eficientes e bem estruturadas.</p>
+
+  </div><a class="u-url" href="/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">ItaloCobainsBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">ItaloCobainsBlog</li><li><a class="u-email" href="mailto:italobrandao.contato@gmail.com">italobrandao.contato@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/ItaloCobains"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ItaloCobains</span></a></li><li><a href="https://www.twitter.com/JustItalow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">JustItalow</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
