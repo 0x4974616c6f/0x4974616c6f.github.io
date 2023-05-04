@@ -1,4 +1,93 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-05-03T10:27:44-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ItaloCobainsBlog</title><subtitle>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</subtitle><entry><title type="html">Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais</title><link href="http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html" rel="alternate" type="text/html" title="Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais" /><published>2023-05-03T10:10:00-03:00</published><updated>2023-05-03T10:10:00-03:00</updated><id>http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores</id><content type="html" xml:base="http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html"><![CDATA[<p>Olá! Neste post, vamos explorar os conceitos fundamentais da arquitetura de computadores, abordando os principais componentes e suas funções. A arquitetura de computadores é um tema essencial para quem deseja aprofundar seus conhecimentos em ciência da computação e entender como os sistemas computacionais funcionam por trás dos bastidores.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-05-04T07:13:29-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ItaloCobainsBlog</title><subtitle>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</subtitle><entry><title type="html">Como funciona a compressão de dados</title><link href="http://localhost:4000/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados.html" rel="alternate" type="text/html" title="Como funciona a compressão de dados" /><published>2023-05-04T05:10:00-03:00</published><updated>2023-05-04T05:10:00-03:00</updated><id>http://localhost:4000/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados</id><content type="html" xml:base="http://localhost:4000/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados.html"><![CDATA[<p>Olá! Nesse post, vamos explorar os conceitos de compressão de dados, na faculdades de ciencia da computação estudamos que em computadores tudo é um grande “LINGUISÃO DE BITS” que apenas é traduzido por tabelação para caractere, tendo isso em mente vamos entender como funciona o pensamento sobre compressão de dados.</p>
+
+<h1 id="1-o-que-é-a-compressão-de-dados">1. O que é a compressão de dados</h1>
+
+<p>Comprimir é o ato de torna algo menor (espremer) ou (remover). Existem muitos tipo de compressão de dados, aquelas que perdem dados e não tem como reculperar e aquelas que perdem e tem como reculperar.</p>
+
+<h1 id="vamos-para-a-implementação">Vamos para a implementação</h1>
+
+<p>Criei um diretorio <em>teste</em> no meu wsl ubuntu 22 para fazer esse teste.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir teste
+cd teste
+</code></pre></div></div>
+
+<p>Vou criar um arquivo de texto chamado <em>t.txt</em></p>
+
+<p><em>t.txt</em></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aaa b c d e   f
+</code></pre></div></div>
+
+<p>vamo rodar um xxd nesse arquivo</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>italo@italo:~/teste<span class="nv">$ </span>xxd <span class="nt">-b</span> t.txt
+00000000: 01100001 01100001 01100001 00100000 01100010 00100000  aaa b
+00000006: 01100011 00100000 01100100 00100000 01100101 00100000  c d e
+0000000c: 00100000 00100000 01100110 00001010
+</code></pre></div></div>
+
+<p>Aqui vemos que os primeiros 3 bytes se repetem no endereço offset 00000000 <code class="language-plaintext highlighter-rouge">01100001 01100001 01100001</code> eu sei que ja ta na cara do porque esse byte repete mais vamos ser um pouco mais hardcore e vamos fingir que não sabemos. Para descobrir vou criar um script python para isso.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">binario</span> <span class="o">=</span> <span class="s">'01100001'</span>
+<span class="n">decimal</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">binario</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ascii_char</span> <span class="o">=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">decimal</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">ascii_char</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Agora temos a total certeza que <code class="language-plaintext highlighter-rouge">01100001</code> e igual a <code class="language-plaintext highlighter-rouge">a</code> em ascii, sabendo disso se entra o conceito mais basico de compressão sem perda de dados. Se nos conseguirmos passar simplificar esse dado para apenas um trecho que represente 3 dele vamos ter um arquivo menor correto ? Sim
+embora não seja gritante a diferença, esse é o algoritmo de (RLE) Run Length Encoding. Vamos implementa-lo em python agora.</p>
+
+<div class="language-py highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">compress</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+    
+    <span class="n">compressed_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+            <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">compressed_data</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">count</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]))</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">1</span>
+            
+    <span class="n">compressed_data</span><span class="p">.</span><span class="n">append</span><span class="p">((</span><span class="n">count</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">compressed_data</span>
+
+
+<span class="k">def</span> <span class="nf">decompress</span><span class="p">(</span><span class="n">compressed_data</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">):</span>
+    <span class="n">decompressed_data</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">count</span><span class="p">,</span> <span class="n">byte</span> <span class="ow">in</span> <span class="n">compressed_data</span><span class="p">:</span>
+        <span class="n">decompressed_data</span><span class="p">.</span><span class="n">extend</span><span class="p">([</span><span class="n">byte</span><span class="p">]</span> <span class="o">*</span> <span class="n">count</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">output_file</span><span class="p">:</span>
+        <span class="n">output_file</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">decompressed_data</span><span class="p">))</span>
+
+        
+        
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">input_file_path</span> <span class="o">=</span> <span class="s">'t.txt'</span>
+    <span class="n">compressed_file_path</span> <span class="o">=</span> <span class="s">'t_des.txt'</span>
+
+    <span class="n">compressed_data</span> <span class="o">=</span> <span class="n">compress</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Dados comprimidos: </span><span class="si">{</span><span class="n">compressed_data</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+    <span class="n">decompress</span><span class="p">(</span><span class="n">compressed_data</span><span class="p">,</span> <span class="n">compressed_file_path</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">'Arquivo descomprimido salvo em: </span><span class="si">{</span><span class="n">compressed_file_path</span><span class="si">}</span><span class="s">'</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>italo@italo:~/teste<span class="nv">$ </span>python3 main.py
+Dados comprimidos: <span class="o">[(</span>3, 97<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 98<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 99<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 100<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 101<span class="o">)</span>, <span class="o">(</span>3, 32<span class="o">)</span>, <span class="o">(</span>1, 102<span class="o">)</span>, <span class="o">(</span>1, 10<span class="o">)]</span>
+Arquivo descomprimido salvo em: t_des.txt
+</code></pre></div></div>
+<p>Note a saida, vemos que isso e um array de tuplas sendo o primeiro indice a quantidade de repetição e o segundo o decimal em ascii. E parabens vc fez seu primeiro algoritmo de compressão de dados.</p>]]></content><author><name></name></author><category term="programação" /><category term="algoritmos" /><category term="logica" /><category term="dados" /><summary type="html"><![CDATA[Olá! Nesse post, vamos explorar os conceitos de compressão de dados, na faculdades de ciencia da computação estudamos que em computadores tudo é um grande “LINGUISÃO DE BITS” que apenas é traduzido por tabelação para caractere, tendo isso em mente vamos entender como funciona o pensamento sobre compressão de dados.]]></summary></entry><entry><title type="html">Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais</title><link href="http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html" rel="alternate" type="text/html" title="Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais" /><published>2023-05-03T10:10:00-03:00</published><updated>2023-05-03T10:10:00-03:00</updated><id>http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores</id><content type="html" xml:base="http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html"><![CDATA[<p>Olá! Neste post, vamos explorar os conceitos fundamentais da arquitetura de computadores, abordando os principais componentes e suas funções. A arquitetura de computadores é um tema essencial para quem deseja aprofundar seus conhecimentos em ciência da computação e entender como os sistemas computacionais funcionam por trás dos bastidores.</p>
 
 <h2 id="1-cpu-unidade-central-de-processamento">1. CPU (Unidade Central de Processamento)</h2>
 
