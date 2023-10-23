@@ -17,7 +17,7 @@ Eu sempre digo os que mais postam são os mais tristes e vazios.
 
 - LinkedIn: Seu perfil de trabalhador basicamente uma carteira de trabalho em formato de rede social. (não tem nada dms a não ser a falsa ilusão de que todos ama seu trabalho para atrair recrutadores.)
 
-- Twitter: Esse é o pior no twitter temos 4 tipos de usuarios, os normies que apenas usam para ver noticia de pagina fake, pessoas que gosta de ver shitposting, amantes de pornografia, usuarios de conteudo esqueroso como (pedofilia, zoofilia e etc...)
+- Twitter: Esse é o pior no twitter temos 4 tipos de usuarios, os normies que apenas usam para ver noticia de pagina fake, pessoas deprimidas que falam mal dos outros e da propria vida e se mal dizem de barriga cheia, amantes de pornografia, usuarios de conteudo esqueroso como (pedofilia, zoofilia e etc...)
 
 Embora não seja muito falado sobre esses assuntos basta um boa navegada pelo twitter e vc ja começa a acha essas maluquisses. 
 
