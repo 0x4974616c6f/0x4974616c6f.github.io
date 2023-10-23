@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Escrevendo um sistema operacional com rust | ItaloCobainsBlog</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Escrevendo um sistema operacional com rust" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do os.phil-opp.com para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs." />
+<meta property="og:description" content="Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do os.phil-opp.com para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs." />
+<link rel="canonical" href="http://localhost:4000/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html" />
+<meta property="og:url" content="http://localhost:4000/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html" />
+<meta property="og:site_name" content="ItaloCobainsBlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-22T22:10:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Escrevendo um sistema operacional com rust" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-22T22:10:00-03:00","datePublished":"2023-10-22T22:10:00-03:00","description":"Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do os.phil-opp.com para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs.","headline":"Escrevendo um sistema operacional com rust","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html"},"url":"http://localhost:4000/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="ItaloCobainsBlog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">ItaloCobainsBlog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/sobre/">Sobre</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Escrevendo um sistema operacional com rust</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-22T22:10:00-03:00" itemprop="datePublished">Oct 22, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do <a href="https://os.phil-opp.com/freestanding-rust-binary/">os.phil-opp.com</a> para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs.</p>
+
+<h1 id="1-por-onde-começar">1. Por onde começar</h1>
+
+<p>A primeira coisa que precisamos fazer para criar nosso sistema operacional e construir nosso kernel ou seja um executavel rust que não está vinculado a nenhuma biblioteca padrão. Isso fazendo possivel rodar o executavel no <a href="https://en.wikipedia.org/wiki/Bare_machine">barel metal</a></p>
+
+<p>Vamos começar criando o projeto:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  cargo new os --bin --edition 2018
+</code></pre></div></div>
+
+<h2 id="atributo-no_std">Atributo <code class="language-plaintext highlighter-rouge">no_std</code></h2>
+
+<p>Esse é um atributo no rust que desabilita o uso da biblioteca padrão do rust.</p>
+
+<div class="language-rs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// main.rs</span>
+<span class="nd">#![no_std]</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Hello, world!"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Se executarmos <code class="language-plaintext highlighter-rouge">cargo build</code> e esperado que tenhamos o seguinte erro.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>italo@italo:~/os<span class="nv">$ </span>cargo build
+   Compiling os v0.1.0 <span class="o">(</span>/home/italo/os<span class="o">)</span>
+error: cannot find macro <span class="sb">`</span>println<span class="sb">`</span> <span class="k">in </span>this scope
+ <span class="nt">--</span><span class="o">&gt;</span> src/main.rs:4:5
+  |
+4 |     println!<span class="o">(</span><span class="s2">"Hello, world!"</span><span class="o">)</span><span class="p">;</span>
+  |     ^^^^^^^
+
+error: <span class="sb">`</span><span class="c">#[panic_handler]` function required, but not found</span>
+
+error: language item required, but not found: <span class="sb">`</span>eh_personality<span class="sb">`</span>
+  |
+  <span class="o">=</span> note: this can occur when a binary crate with <span class="sb">`</span><span class="c">#![no_std]` is compiled for a target where `eh_personality` is defined in the standard library</span>
+  <span class="o">=</span> <span class="nb">help</span>: you may be able to compile <span class="k">for </span>a target that doesn<span class="s1">'t need `eh_personality`, specify a target with `--target` or in `.cargo/config`
+
+error: could not compile `os` due to 3 previous errors
+</span></code></pre></div></div>
+
+<p>A razao disso é que println é um macro da lib padrão.</p>
+
+<div class="language-rs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// main.rs</span>
+<span class="nd">#![no_std]</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Se tentarmos buildar novamente teremos o erro.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>italo@italo:~/os<span class="nv">$ </span>cargo build
+   Compiling os v0.1.0 <span class="o">(</span>/home/italo/os<span class="o">)</span>
+error: <span class="sb">`</span><span class="c">#[panic_handler]` function required, but not found</span>
+
+error: language item required, but not found: <span class="sb">`</span>eh_personality<span class="sb">`</span>
+  |
+  <span class="o">=</span> note: this can occur when a binary crate with <span class="sb">`</span><span class="c">#![no_std]` is compiled for a target where `eh_personality` is defined in the standard library</span>
+  <span class="o">=</span> <span class="nb">help</span>: you may be able to compile <span class="k">for </span>a target that doesn<span class="s1">'t need `eh_personality`, specify a target with `--target` or in `.cargo/config`
+
+error: could not compile `os` due to 2 previous errors
+</span></code></pre></div></div>
+
+<p>O panic_handler atributo define a função que o compilador deve invocar quando ocorrer um pânico . A biblioteca padrão fornece sua própria função de tratamento de pânico, mas em um no_stdambiente precisamos defini-la nós mesmos:</p>
+
+<div class="language-rs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#![no_std]</span>
+
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="k">use</span> <span class="nn">core</span><span class="p">::</span><span class="nn">panic</span><span class="p">::</span><span class="n">PanicInfo</span><span class="p">;</span>
+
+<span class="cd">/// This function is called on panic.</span>
+<span class="nd">#[panic_handler]</span>
+<span class="k">fn</span> <span class="nf">panic</span><span class="p">(</span><span class="n">_info</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">PanicInfo</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">!</span> <span class="p">{</span>
+    <span class="k">loop</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Alem disso temos que desabilitar o Unwinding.</p>
+
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Cargo.toml</span>
+
+<span class="nn">[profile.dev]</span>
+<span class="py">panic</span> <span class="p">=</span> <span class="s">"abort"</span>
+
+<span class="nn">[profile.release]</span>
+<span class="py">panic</span> <span class="p">=</span> <span class="s">"abort"</span>
+</code></pre></div></div>
+
+<p>Buildando novamente:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>italo@italo:~/os<span class="nv">$ </span>cargo build
+   Compiling os v0.1.0 <span class="o">(</span>/home/italo/os<span class="o">)</span>
+error: requires <span class="sb">`</span>start<span class="sb">`</span> lang_item
+
+error: could not compile <span class="sb">`</span>os<span class="sb">`</span> due to previous error
+</code></pre></div></div>
+
+<h2 id="atributo-start">Atributo start</h2>
+
+<p>Em rust pensamos que a função <code class="language-plaintext highlighter-rouge">main</code> e a primeira função que é execultada. Porem a maioria das linguagens possui um <a href="https://en.wikipedia.org/wiki/Runtime_system">Runtime system</a> utilizado para fazer varias coisas como coleta de lixo como no Java ou threads de software como o goroutine em Go. Esse Runtime System é executado antes do main.
+Em um binario Rust que esta vinculado a lib padrão a execução começa em um lib de runtime system C chamada <code class="language-plaintext highlighter-rouge">crt0</code>(“C runtime zero”) que configura o ambiente para o aplicativo C isso inclui criação de pilha e correções de argumentos nos registradores. O Runtime system invoca o <a href="https://github.com/rust-lang/rust/blob/bb4d1491466d8239a7a5fd68bd605e3276e97afb/src/libstd/rt.rs#L32-L73">ponto de entrada em tempo de execução</a> que esta marcado como <code class="language-plaintext highlighter-rouge">start</code></p>
+
+<p>Como não temos acesso a crt0 pois nosso binario rust é independente vamos ter criar nosso ponto de entrada.</p>
+
+<p>Adicione o atributo <code class="language-plaintext highlighter-rouge">#![no_main]</code>.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#![no_std]</span>
+<span class="nd">#![no_main]</span>
+
+<span class="k">use</span> <span class="nn">core</span><span class="p">::</span><span class="nn">panic</span><span class="p">::</span><span class="n">PanicInfo</span><span class="p">;</span>
+
+
+<span class="nd">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">_start</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">!</span> <span class="p">{</span>
+    <span class="k">loop</span> <span class="p">{</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cd">/// This function is called on panic.</span>
+<span class="nd">#[panic_handler]</span>
+<span class="k">fn</span> <span class="nf">panic</span><span class="p">(</span><span class="n">_info</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">PanicInfo</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">!</span> <span class="p">{</span>
+    <span class="k">loop</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Ao usar o #[no_mangle] atributo, desabilitamos a manipulação de nomes para garantir que o compilador Rust realmente produza uma função com o nome <code class="language-plaintext highlighter-rouge">\_start</code>. Sem o atributo, o compilador geraria algum <code class="language-plaintext highlighter-rouge">\_ZN3blog_os4_start7hb173fedf945531caE</code> símbolo enigmático para dar a cada função um nome exclusivo. O atributo é obrigatório porque precisamos informar o nome da função do ponto de entrada ao vinculador na próxima etapa.</p>
+
+<p>Tambem usar <a href="https://en.wikipedia.org/wiki/Calling_convention">Calling convention</a> com <code class="language-plaintext highlighter-rouge">extern "C"</code> para informar ou compilador que ele deve usar essa funcão como <code class="language-plaintext highlighter-rouge">start</code></p>
+
+<p>Quando executamos cargo buildagora, obtemos um erro feio no vinculador .</p>
+
+<h3 id="erros-do-vinculador">Erros do vinculador</h3>
+
+<p>O vinculador é um programa que combina o código gerado em um executável. Como o formato executável difere entre Linux, Windows e macOS, cada sistema possui seu próprio vinculador que gera um erro diferente. A causa fundamental dos erros é a mesma: a configuração padrão do vinculador assume que nosso programa depende do tempo de execução C, o que não acontece.</p>
+
+<p>Para resolver os erros, precisamos informar ao vinculador que ele não deve incluir o tempo de execução C. Podemos fazer isso passando um determinado conjunto de argumentos para o vinculador ou construindo para um alvo bare metal.</p>
+
+<h3 id="construindo-para-um-alvo-bare-metal">🔗Construindo para um alvo Bare Metal</h3>
+
+<p>Por padrão, o Rust tenta construir um executável que seja capaz de ser executado no ambiente atual do sistema. Por exemplo, se você estiver usando o Windows no x86_64, o Rust tentará criar um .exeexecutável do Windows que use x86_64instruções. Este ambiente é chamado de sistema “host”.</p>
+
+<p>Para descrever diferentes ambientes, Rust usa uma string chamada target triple . Você pode ver o triplo alvo do seu sistema host executando rustc –version –verbose:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>italo@italo:~/os$ rustc --version --verbose
+rustc 1.66.1 (90743e729 2023-01-10) (built from a source tarball)
+binary: rustc
+commit-hash: 90743e7298aca107ddaa0c202a4d3604e29bfeb6
+commit-date: 2023-01-10
+host: x86_64-unknown-linux-gnu
+release: 1.66.1
+LLVM version: 15.0.7
+</code></pre></div></div>
+
+<p>Ao compilar para nosso host triplo, o compilador Rust e o vinculador assumem que existe um sistema operacional subjacente, como Linux ou Windows, que usa o tempo de execução C por padrão, o que causa erros no vinculador. Portanto, para evitar erros do vinculador, podemos compilar para um ambiente diferente sem sistema operacional subjacente.</p>
+
+<p>Um exemplo de ambiente bare metal é o thumbv7em-none-eabihfalvo triplo, que descreve um sistema ARM embarcado . Os detalhes não são importantes, tudo o que importa é que o triplo alvo não tenha nenhum sistema operacional subjacente, o que é indicado pelo no triplo alvo. Para poder compilar para este alvo, precisamos adicioná-lo no Rustup:none</p>
+
+<p><code class="language-plaintext highlighter-rouge">rustup target add thumbv7em-none-eabihf</code></p>
+
+<p>Isso baixa uma cópia da biblioteca padrão (e principal) do sistema. Agora podemos construir nosso executável independente para este alvo:</p>
+
+<p><code class="language-plaintext highlighter-rouge">cargo build --target thumbv7em-none-eabihf</code></p>
+
+<p>Agora sim roda de boa.</p>
+
+<p>Como ficou tudo ?</p>
+
+<p><code class="language-plaintext highlighter-rouge">src/main</code>:</p>
+
+<div class="language-rs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">#![no_std]</span>
+<span class="nd">#![no_main]</span>
+
+<span class="k">use</span> <span class="nn">core</span><span class="p">::</span><span class="nn">panic</span><span class="p">::</span><span class="n">PanicInfo</span><span class="p">;</span>
+
+<span class="nd">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">_start</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">!</span> <span class="p">{</span>
+    <span class="k">loop</span> <span class="p">{}</span>
+<span class="p">}</span>
+
+<span class="cd">/// This function is called on panic.</span>
+<span class="nd">#[panic_handler]</span>
+<span class="k">fn</span> <span class="nf">panic</span><span class="p">(</span><span class="n">_info</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">PanicInfo</span><span class="p">)</span> <span class="k">-&gt;</span> <span class="o">!</span> <span class="p">{</span>
+    <span class="k">loop</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">Cargo.toml</code>:</p>
+
+<pre><code class="language-t">[package]
+name = "blog_os"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[dependencies]
+
+</code></pre>
+
+<p>Para buildar use <code class="language-plaintext highlighter-rouge">cargo build --target thumbv7em-none-eabihf</code></p>
+
+<p>para compilar para host especificos use:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Linux</span>
+cargo rustc <span class="nt">--</span> <span class="nt">-C</span> link-arg<span class="o">=</span><span class="nt">-nostartfiles</span>
+<span class="c"># Windows</span>
+cargo rustc <span class="nt">--</span> <span class="nt">-C</span> link-args<span class="o">=</span><span class="s2">"/ENTRY:_start /SUBSYSTEM:console"</span>
+<span class="c"># macOS</span>
+cargo rustc <span class="nt">--</span> <span class="nt">-C</span> link-args<span class="o">=</span><span class="s2">"-e __start -static -nostartfiles"</span>
+</code></pre></div></div>
+
+<p>Esse foi o primeira etapa fique atento a novas postagens.</p>
+
+  </div><a class="u-url" href="/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">ItaloCobainsBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">ItaloCobainsBlog</li><li><a class="u-email" href="mailto:italobrandao.contato@gmail.com">italobrandao.contato@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/ItaloCobains"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ItaloCobains</span></a></li><li><a href="https://www.twitter.com/JustItalow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">JustItalow</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
