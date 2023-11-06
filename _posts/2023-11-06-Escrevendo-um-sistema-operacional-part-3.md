@@ -112,3 +112,6 @@ cargo bootimage
 ```
 
 Execulte `qemu-system-x86_64 -drive format=raw,file=target/x86_64-blog_os/debug/bootimage-blog_os.bin` e vc vera seu os rodar.
+
+para pendrive:
+`dd if=target/x86_64-blog_os/debug/bootimage-blog_os.bin of=/dev/sdX && sync`
