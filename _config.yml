@@ -17,8 +17,13 @@ title: ItaloCobainsBlog
 email: italobrandao.contato@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+# Comentários do Disqus 
+disqus: 
+    shortname: ItaloCobainsBlog
+    # Deixe o nome abreviado em branco para desativar os comentários em todo o site. 
+    # Desative comentários para qualquer postagem adicionando `comments: false` ao YAML Front Matter dessa postagem. 
+
+url: "http://ItaloCobainsBlog.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: JustItalow
 github_username:  ItaloCobains
 
@@ -27,6 +32,7 @@ markdown: kramdown
 theme: minima
 plugins:
   - jekyll-feed
+  - jekyll-seo-tag
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

@@ -1,0 +1,107 @@
+<h1 id="o-que-é-um-lex-ou-avaliador-lexico-">O que é um <code class="language-plaintext highlighter-rouge">lex</code> ou <code class="language-plaintext highlighter-rouge">avaliador lexico</code> ?</h1>
+
+<p><code class="language-plaintext highlighter-rouge">Lexical analyzer</code> ou <code class="language-plaintext highlighter-rouge">lex</code> ou <code class="language-plaintext highlighter-rouge">avaliador léxico</code> é um processo fundamental na arquitetura de qualquer interpretador ou compilador.  Ele é responsável por analisar o <code class="language-plaintext highlighter-rouge">codigo fonte</code> ou <code class="language-plaintext highlighter-rouge">entrada de texto</code> iterando sobre cada caractere é gerando <code class="language-plaintext highlighter-rouge">tokens</code> ou <code class="language-plaintext highlighter-rouge">simbolos</code> que vão ser importante para os próximos passos de um compilador/interpretador.</p>
+
+<h2 id="como-escrever-um-lex-">Como escrever um lex ?</h2>
+
+<p>Exemplo: LexEstupido.js</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">Token</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">type</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nx">Lexer</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="nx">code</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">isWhitespace</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sr">/</span><span class="se">\s</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">isDigit</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sr">/</span><span class="se">\d</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">isAlpha</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sr">/</span><span class="se">[</span><span class="sr">a-zA-Z_</span><span class="se">]</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">getNextToken</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">char</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">];</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isWhitespace</span><span class="p">(</span><span class="nx">char</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">continue</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="k">switch</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="k">this</span><span class="p">.</span><span class="nx">isDigit</span><span class="p">(</span><span class="nx">char</span><span class="p">):</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseNumber</span><span class="p">();</span>
+        <span class="k">case</span> <span class="k">this</span><span class="p">.</span><span class="nx">isAlpha</span><span class="p">(</span><span class="nx">char</span><span class="p">):</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseIdentifier</span><span class="p">();</span>
+        <span class="k">case</span> <span class="sr">/</span><span class="se">[\+\-\*\/\(\)]</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">):</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+          <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">char</span><span class="p">,</span> <span class="nx">char</span><span class="p">);</span>
+        <span class="k">case</span> <span class="nx">char</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">=</span><span class="dl">'</span><span class="p">:</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+          <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="dl">'</span><span class="s1">EQUALS</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">=</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nl">default</span><span class="p">:</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">`Erro léxico: Caractere inesperado '</span><span class="p">${</span><span class="nx">char</span><span class="p">}</span><span class="s2">' na posição </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+          <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Fim do código</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">parseNumber</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">value</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">isDigit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">]))</span> <span class="p">{</span>
+      <span class="nx">value</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="dl">'</span><span class="s1">NUMBER</span><span class="dl">'</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="nx">parseIdentifier</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">value</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isAlpha</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">])</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">isDigit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">])))</span> <span class="p">{</span>
+      <span class="nx">value</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="dl">'</span><span class="s1">ID</span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">tokenize</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">tokens</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="kd">let</span> <span class="nx">token</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">((</span><span class="nx">token</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getNextToken</span><span class="p">())</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">tokens</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">token</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">tokens</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Exemplo de uso</span>
+<span class="kd">const</span> <span class="nx">codigoFonte</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">x = 10 + 20 * (30 - 5)</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">lexer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Lexer</span><span class="p">(</span><span class="nx">codigoFonte</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">tokensResultantes</span> <span class="o">=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">tokenize</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tokensResultantes</span><span class="p">);</span>
+
+</code></pre></div></div>
+
+<p>Primeiramente, criamos um ‘Token’, uma estrutura que armazena a identidade de cada caractere. É importante observar que um ‘Token’ pode conter mais atributos do que os exemplificados aqui; meu exemplo é simplificado.</p>
+
+<p>Em seguida, começamos com a classe que recebe o código no construtor. Posteriormente, o método ‘tokenize’ é implementado como o principal da classe, responsável por percorrer o código fonte. O método ‘getNextToken’ é encarregado de identificar o caractere atual e atribuí-lo a um ‘Token’. Os demais métodos servem apenas como validadores de strings. Ao final, o vetor de ‘Tokens’ é retornado.”</p>

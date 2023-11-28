@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Escrevendo um sistema operacional com rust part 2 | ItaloCobainsBlog</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Escrevendo um sistema operacional com rust part 2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Olá amigos vamos começar o segundo passo do nosso sistema operacional. Na parte inicial ja temos um programa rust independente com ponto de entrada e funcao de panic configurados alem de podermos compilar para qualquer arquitetura." />
+<meta property="og:description" content="Olá amigos vamos começar o segundo passo do nosso sistema operacional. Na parte inicial ja temos um programa rust independente com ponto de entrada e funcao de panic configurados alem de podermos compilar para qualquer arquitetura." />
+<link rel="canonical" href="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html" />
+<meta property="og:url" content="http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html" />
+<meta property="og:site_name" content="ItaloCobainsBlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-10-23T11:30:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Escrevendo um sistema operacional com rust part 2" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-10-23T11:30:00-03:00","datePublished":"2023-10-23T11:30:00-03:00","description":"Olá amigos vamos começar o segundo passo do nosso sistema operacional. Na parte inicial ja temos um programa rust independente com ponto de entrada e funcao de panic configurados alem de podermos compilar para qualquer arquitetura.","headline":"Escrevendo um sistema operacional com rust part 2","mainEntityOfPage":{"@type":"WebPage","@id":"http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html"},"url":"http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://italocobainsblog.com/feed.xml" title="ItaloCobainsBlog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">ItaloCobainsBlog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/sobre/">Sobre</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Escrevendo um sistema operacional com rust part 2</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-10-23T11:30:00-03:00" itemprop="datePublished">Oct 23, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>Olá amigos vamos começar o segundo passo do nosso sistema operacional. Na parte inicial
+ja temos um programa rust independente com ponto de entrada e funcao de panic configurados alem de 
+podermos compilar para qualquer arquitetura.</p>
+
+<p>Nesse post vamos criar uma kernel de no minimo 64 bits para arquitetura x86 baseado no nosso binario independente.</p>
+
+<h2 id="o-processo-de-inicialização">O processo de inicialização</h2>
+
+<p>Quando ligamos o computador, ele começa a execultar codigo do firmware armazenado na <a href="https://en.wikipedia.org/wiki/Read-only_memory">ROM</a> da placa mãe. Este codigo executa um <a href="https://en.wikipedia.org/wiki/Power-on_self-test">Power-on self-test</a>, detectar a RAM disponivel e pre-inicializa a CPU e o hardware. Depois, procura um disco inicializável e inicia a kernel do sistema operacional.</p>
+
+<p>No x86 existem dois padrões de firmware: o “Basic Input/Output System” <a href="https://en.wikipedia.org/wiki/BIOS">BIOS</a> e o mais recente “Unified Extensible Firmware Interface” <a href="https://en.wikipedia.org/wiki/UEFI">UEFI</a>. O padrão BIOS é antigo e desatualizado, mas simples e bem suportado em qualquer máquina x86 desde a década de 1980. O UEFI, por outro lado, é mais moderno e tem muito mais recurso, mas é mais complexo de configurar.</p>
+
+<p>Atualmente, fornecemos apenas suporte para BIOS.</p>
+
+<h2 id="inicialização-do-bios">Inicialização do BIOS</h2>
+
+<p>Quase todas os sistemas x86 tem suporte para inicialização BIOS, incluindo maquinas mais recentes baseadas em UEFI que usam BIOS emulado. Isso é otimo por que vc pode usar a mesma logica de inicialização em todas as maquinas do seculo passado. Mas essa ampla compatibilidade é ao mesmo tempo a maior desvantagem da inicialização BIOS, por que significa que a CPU é colocada em um modo de compatibilidade de 16 bits chamado modo <a href="https://en.wikipedia.org/wiki/Real_mode">real</a> antes da inicialização, para que os carregadores de inicialização arcaicos da decada de 1980 ainda funcionem.</p>
+
+<p>Vamos começar do inicio:</p>
+
+<p>Quando vc liga o computador ele carrega a BIOS de alguma memoria flash especial localizada na placa mae. O BIOS executa rotinas de autoteste e inicialização do hardware e, em seguida, procura disco inicializavel. Se encontrar um, o controler é transferido para o seu bootloader, que é uma porção de 512 bytes de codigo executavel armazenado no inicio do disco. A maioria dos bootloaders tem mais de 512 bytes, entt os bootloaders são comumente divididos em um pequeno primeiro estagio, que cabe em 512 bytes e um segundo estagio que é posteriormente carregado pelo primeiro.</p>
+
+<p>O bootloader deve determinar a localização da imagem do kernel no disco e carrega-la na memoria. ELe tambem precisar mudar a CPU do <a href="https://en.wikipedia.org/wiki/Real_mode">modo real</a> para o <a href="https://en.wikipedia.org/wiki/Protected_mode">modo protegido</a> de 32 bits e depois para o <a href="https://en.wikipedia.org/wiki/Long_mode">modo longo</a> de 64 bits, onde os registros de 64 bits e a memoria principal completa estao disponiveis. Sua terceira tarefa é consultar certas informacoes como (um mapa de memoria) do BIOS e passa-la para o kernel do sistema operacional.</p>
+
+<p>Escrever um bootloader é um pouco complicado pois requer linguaguem como assembly e muitas etapas não esclarecedoras, como “escrever este valor magico neste registro do processador”. Portanto não abordaremos a criacao de bootloader nesse post, em vez disso, forneceremos uma ferramenta chamada <a href="https://github.com/rust-osdev/bootimage">bootimage</a> que acrecenta automaticamente um bootloader ao seu kernel.</p>
+
+<h3 id="o-padrão-de-inicialização-múltipla">O padrão de inicialização múltipla</h3>
+
+<p>Para evitar que cada sistema operacional implemente seu proprio bootloader, que so é compativel com um unico sistema, a <a href="https://en.wikipedia.org/wiki/Free_Software_Foundation">Free Software Foundation</a> criou um padrão de bootloader aberto chamado <a href="https://wiki.osdev.org/Multiboot">Multiboot</a> em 1995. O padrão define uma interface entre o bootloader e o sistema operacional, para que qualquer bootloader compativel com MultiBoot possa carregar possa carregar qualquer sistema operacional com multiboot.</p>
+
+<p>Para tornar um kernel compatível com Multiboot, basta inserir o chamado <a href="https://www.gnu.org/software/grub/manual/multiboot/multiboot.html#OS-image-format">cabeçalho Multiboot</a> no início do arquivo do kernel. Isso torna muito fácil inicializar um sistema operacional a partir do GRUB. No entanto, o GRUB e o padrão Multiboot também apresentam alguns problemas:</p>
+
+<ul>
+  <li>
+    <p>Eles suportam apenas o modo protegido de 32 bits. Isso significa que você ainda precisa fazer a configuração da CPU para mudar para o modo longo de 64 bits.</p>
+  </li>
+  <li>
+    <p>Eles são projetados para tornar o bootloader simples em vez do kernel. Por exemplo, o kernel precisa estar vinculado a um tamanho de página padrão ajustado , porque o GRUB não consegue encontrar o cabeçalho Multiboot de outra forma. Outro exemplo é que as informações de inicialização , que são passadas para o kernel, contêm muitas estruturas dependentes da arquitetura em vez de fornecer abstrações limpas.</p>
+  </li>
+  <li>
+    <p>Tanto o GRUB quanto o padrão Multiboot são pouco documentados.</p>
+  </li>
+  <li>
+    <p>O GRUB precisa ser instalado no sistema host para criar uma imagem de disco inicializável a partir do arquivo do kernel. Isso torna o desenvolvimento em Windows ou Mac mais difícil.</p>
+  </li>
+</ul>
+
+<p>Devido a essas desvantagens, decidimos não usar o GRUB ou o padrão Multiboot. No entanto, planejamos adicionar suporte Multiboot à nossa ferramenta bootimage , para que seja possível carregar seu kernel também em um sistema GRUB.</p>
+
+<h3 id="uefi">UEFI</h3>
+<p>Não oferecemos suporte UEFI no momento.</p>
+
+<h2 id="um-kernel-mínimo">Um kernel mínimo</h2>
+
+<p>Agora que sabemos aproximadamente como um computador inicia, é hora de criar nosso proprio kernel minimo, Nosso objetivo é criar uma imagem que imprima um “Hello world” para a tela quando inicializar. Fazemos isso estendendo o binario rust independente</p>
+
+<p>Como você deve se lembrar, construímos o binário independente por meio do cargo, mas dependendo do sistema operacional, precisávamos de diferentes nomes de pontos de entrada e sinalizadores de compilação. Isso ocorre porque cargoas compilações para o sistema host por padrão, ou seja, o sistema em que você está executando. Isso não é algo que queremos para o nosso kernel, porque um kernel que roda sobre, por exemplo, o Windows, não faz muito sentido. Em vez disso, queremos compilar para um sistema de destino claramente definido .</p>
+
+<h2 id="instalando-rust-nightly">Instalando Rust Nightly</h2>
+
+<p>RUst tem três canais de lançamento: stable, beta e nightly. O Rust Book explica muito bem a diferença entre esses canais, então reselve um minuto <a href="https://doc.rust-lang.org/book/appendix-07-nightly-rust.html#choo-choo-release-channels-and-riding-the-trains">e de uma olhada</a>. Para contruir um sistema operacional, precisamos de alguns recursos experimentais que estão disponiveis apenas no canal nightly, portanto, precisamos instalar uma versão nightly do rust</p>
+
+<p>Para gerenciar instalações Rust, recomendo enfaticamente o rustup . Ele permite que você instale compiladores noturnos, beta e estáveis ​​lado a lado e facilita sua atualização. Com o Rustup, você pode usar um compilador noturno para o diretório atual executando <code class="language-plaintext highlighter-rouge">rustup override set nightly</code>. Alternativamente, você pode adicionar um arquivo chamado <code class="language-plaintext highlighter-rouge">rust-toolchain</code> com o conteúdo <code class="language-plaintext highlighter-rouge">nightly</code> ao diretório raiz do projeto. Você pode verificar se possui uma versão noturna instalada executando <code class="language-plaintext highlighter-rouge">rustc --version</code>: O número da versão deve conter -nightly no final.</p>
+
+<p>O compilador noturno nos permite ativar vários recursos experimentais usando os chamados sinalizadores de recurso na parte superior do nosso arquivo. Por exemplo, poderíamos ativar a <code class="language-plaintext highlighter-rouge">asm!</code> macro experimental para montagem inline adicionando <code class="language-plaintext highlighter-rouge">#![feature(asm)]</code> ao topo do nosso arquivo main.rs. Observe que esses recursos experimentais são completamente instáveis, o que significa que versões futuras do Rust podem alterá-los ou removê-los sem aviso prévio. Por este motivo, só os utilizaremos se for absolutamente necessário.</p>
+
+<h3 id="especificação-de-destino">Especificação de destino</h3>
+
+<p>Cargo oferece suporte a diferentes sistemas de destino por meio do –targetparâmetro. O alvo é descrito pelo chamado <a href="https://clang.llvm.org/docs/CrossCompilation.html#target-triple">alvo triplo</a> que descreve a arquitetura da CPU, o fornecedor, o sistema operacional e a <a href="https://stackoverflow.com/questions/2171177/what-is-an-application-binary-interface-abi/2456882#2456882">ABI</a>. Por exemplo, o <code class="language-plaintext highlighter-rouge">x86_64-unknown-linux-gnu</code> triplo alvo descreve um sistema com <code class="language-plaintext highlighter-rouge">x86_64</code> CPU, sem fornecedor claro e um sistema operacional Linux com GNU ABI. Rust oferece suporte a <a href="https://doc.rust-lang.org/nightly/rustc/platform-support.html">muitos triplos de destino diferentes</a>, inclusive <code class="language-plaintext highlighter-rouge">arm-linux-androideabi</code> para Android ou <code class="language-plaintext highlighter-rouge">wasm32-unknown-unknown</code> para WebAssembly.</p>
+
+<p>Para o nosso sistema alvo, no entanto, necessitamos de alguns parâmetros de configuração especiais (por exemplo, nenhum sistema operacional subjacente), de modo que nenhum dos triplos alvo existentes se ajuste. Felizmente, Rust nos permite definir nosso próprio alvo através de um arquivo JSON. Por exemplo, um arquivo JSON que descreve o <code class="language-plaintext highlighter-rouge">x86_64-unknown-linux-gnu</code> destino tem esta aparência:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"llvm-target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64-unknown-linux-gnu"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data-layout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e-m:e-i64:64-f80:128-n8:16:32:64-S128"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-endian"</span><span class="p">:</span><span class="w"> </span><span class="s2">"little"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-pointer-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-c-int-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"32"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"os"</span><span class="p">:</span><span class="w"> </span><span class="s2">"linux"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"executables"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"linker-flavor"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gcc"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"pre-link-args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"-m64"</span><span class="p">],</span><span class="w">
+    </span><span class="nl">"morestack"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>A maioria dos campos é exigida pelo LLVM para gerar código para essa plataforma. Por exemplo, o <a href="https://llvm.org/docs/LangRef.html#data-layout">data-layout</a> campo define o tamanho de vários tipos inteiros, de ponto flutuante e de ponteiro. Depois, há campos que Rust usa para compilação condicional, como target-pointer-width. O terceiro tipo de campo define como a caixa deve ser construída. Por exemplo, o pre-link-argscampo especifica argumentos passados ​​ao <a href="https://en.wikipedia.org/wiki/Linker_(computing)">vinculador</a>.</p>
+
+<p>Também visamos <code class="language-plaintext highlighter-rouge">x86_64</code> sistemas com nosso kernel, então nossa especificação de destino será muito semelhante à acima. Vamos começar criando um <code class="language-plaintext highlighter-rouge">x86_64-blog_os.json</code> arquivo (escolha o nome que desejar) com o conteúdo comum:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="nl">"llvm-target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64-unknown-none"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"data-layout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e-m:e-i64:64-f80:128-n8:16:32:64-S128"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"arch"</span><span class="p">:</span><span class="w"> </span><span class="s2">"x86_64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-endian"</span><span class="p">:</span><span class="w"> </span><span class="s2">"little"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-pointer-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"64"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"target-c-int-width"</span><span class="p">:</span><span class="w"> </span><span class="s2">"32"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"os"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"executables"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+
+  </div>
+
+<div id="disqus_thread"></div>
+<script>
+  var disqus_config = function () {
+    this.page.url = 'http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html';
+    this.page.identifier = 'http://italocobainsblog.com/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html';
+  };
+  (function () {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://ItaloCobainsBlog.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments
+    powered by Disqus.</a></noscript>
+
+<a class="u-url" href="/ciencia/programacao/os/rust/2023/10/23/Escrevendo-um-sistema-operacional-com-rust-part-2.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">ItaloCobainsBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">ItaloCobainsBlog</li><li><a class="u-email" href="mailto:italobrandao.contato@gmail.com">italobrandao.contato@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/ItaloCobains"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ItaloCobains</span></a></li><li><a href="https://www.twitter.com/JustItalow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">JustItalow</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
