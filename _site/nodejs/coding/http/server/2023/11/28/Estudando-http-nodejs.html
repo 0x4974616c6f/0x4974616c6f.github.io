@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Estudando nodejs http lib native | ItaloCobainsBlog</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Estudando nodejs http lib native" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução." />
+<meta property="og:description" content="Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução." />
+<link rel="canonical" href="http://localhost:4000/nodejs/coding/http/server/2023/11/28/Estudando-http-nodejs.html" />
+<meta property="og:url" content="http://localhost:4000/nodejs/coding/http/server/2023/11/28/Estudando-http-nodejs.html" />
+<meta property="og:site_name" content="ItaloCobainsBlog" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-28T19:30:00-03:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Estudando nodejs http lib native" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-11-28T19:30:00-03:00","datePublished":"2023-11-28T19:30:00-03:00","description":"Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.","headline":"Estudando nodejs http lib native","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/nodejs/coding/http/server/2023/11/28/Estudando-http-nodejs.html"},"url":"http://localhost:4000/nodejs/coding/http/server/2023/11/28/Estudando-http-nodejs.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="ItaloCobainsBlog" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">ItaloCobainsBlog</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/sobre/">Sobre</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Estudando nodejs http lib native</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2023-11-28T19:30:00-03:00" itemprop="datePublished">Nov 28, 2023
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="/assets/http.jpg" style="width: 400px; height: 400px;" /></p>
+
+<h1 id="http-native-nodejs-module">HTTP native nodejs module</h1>
+
+<p>Olá hoje vamos estudar um pouco sobre o modulo HTTP nativo do nodejs para isso usarei node <code class="language-plaintext highlighter-rouge">21.2.0</code>.
+Vamos primeiro começar criando um repositorio para testar nosso codigos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>lib_http
+
+yarn init <span class="nt">-y</span>
+
+<span class="c"># ou</span>
+
+npm init <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>Lembre-se de habilitar o module no <code class="language-plaintext highlighter-rouge">package.json</code></p>
+
+<p>Depois que vc ja criou o repositorio e ja inicializou o projeto, criei um arquivo <code class="language-plaintext highlighter-rouge">index.js</code> e vamos codar</p>
+
+<p>Vamos comecar desse ponto da <a href="https://nodejs.org/api/http.html#http">documentacao</a>.</p>
+
+<p>Conseguimos acesso ao codigo fonte pelo seguinte <a href="https://github.com/nodejs/node/blob/v21.2.0/lib/http.js">link</a>.</p>
+
+<p>No arquivo <code class="language-plaintext highlighter-rouge">index.js</code> importe a lib</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nx">http</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">node:http</span><span class="dl">'</span>
+</code></pre></div></div>
+
+<p>Quando usamos <code class="language-plaintext highlighter-rouge">node:lib</code> garatimos que iremos usar a lib nativa do nodejs,
+fazendo um resumo a lib http foi projetada para oferecer suporte a muitos
+recursos do protocolo  que têm sido tradicionalmente difíceis de usar. Em particular, mensagens grandes, possivelmente codificadas em blocos. Tenha
+cuidado para nunca armazenar mensagens inteiras em <code class="language-plaintext highlighter-rouge">Buffers</code> por que o usuario pode acabar transmitindo dados e prejudicando a memoria do seu processo.</p>
+
+<p>Os cabeçalhos das mensagens HTTP são representados por um objeto como este:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="err">'content-length':</span><span class="w"> </span><span class="err">'</span><span class="mi">123</span><span class="err">'</span><span class="p">,</span><span class="w">
+  </span><span class="err">'content-type':</span><span class="w"> </span><span class="err">'text/plain'</span><span class="p">,</span><span class="w">
+  </span><span class="err">'connection':</span><span class="w"> </span><span class="err">'keep-alive'</span><span class="p">,</span><span class="w">
+  </span><span class="err">'host':</span><span class="w"> </span><span class="err">'example.com'</span><span class="p">,</span><span class="w">
+  </span><span class="err">'accept':</span><span class="w"> </span><span class="err">'*/*'</span><span class="w"> 
+ </span><span class="p">}</span><span class="w"> 
+</span></code></pre></div></div>
+
+<h2 id="classhttpagent">Class:http.Agent</h2>
+
+<p>Um Agent e responsavel por gerenciar a persistencia e reutilização  da conexão para Clientes HTTP. Ele mantem uma fila de solicitações pendentes para um determinado host e porta,
+reutilizando uma unica conexão de socket para cada um ate que a fila esteja vazia, momento em que o socket é destruido ou colocado em um pool
+onde é mantido para ser usado novamente pela mesma host e porta. Se sera destruido ou agrupado depende do <code class="language-plaintext highlighter-rouge">KeepAlive</code></p>
+
+<p>As conexões em pool têm TCP Keep-Alive habilitado para elas, mas os servidores ainda podem fechar conexões ociosas; nesse caso, elas serão removidas do pool e uma nova conexão será feita quando uma nova solicitação HTTP for feita para esse host e porta. Os servidores também podem se recusar a permitir múltiplas solicitações na mesma conexão; nesse caso, a conexão terá que ser refeita para cada solicitação e não poderá ser agrupada. O Agent ainda fará as solicitações para esse servidor, mas cada uma ocorrerá em uma nova conexão.</p>
+
+<p>Quando uma conexão é fechado pelo cliente ou pelo servidor, ela é removida do pool. QuaisQuer soquetes não utilizados no pool não seram corrigidos para não manter o processo <code class="language-plaintext highlighter-rouge">NodeJS</code> em execução quando não houver solicitação pendente. (<a href="https://nodejs.org/api/net.html#socketunref">socket.unref()</a>)</p>
+
+<p>É uma boa prática, para <code class="language-plaintext highlighter-rouge">destroy()</code>uma Agentinstância quando não estiver mais em uso, porque os soquetes não utilizados consomem recursos do sistema operacional.</p>
+
+<p>Os soquetes são removidos de um agente quando o soquete emite um ‘close’ evento ou um ‘agentRemove’ evento. Ao pretender manter uma solicitação HTTP aberta por um longo período sem mantê-la no agente, algo como o seguinte pode ser feito:</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">http</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+<span class="p">}).</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">socket</span><span class="dl">'</span><span class="p">,</span> <span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="dl">'</span><span class="s1">agentRemove</span><span class="dl">'</span><span class="p">)</span>
+<span class="p">})</span>
+</code></pre></div></div>
+
+
+  </div>
+<a class="u-url" href="/nodejs/coding/http/server/2023/11/28/Estudando-http-nodejs.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">ItaloCobainsBlog</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">ItaloCobainsBlog</li><li><a class="u-email" href="mailto:italobrandao.contato@gmail.com">italobrandao.contato@gmail.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/ItaloCobains"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">ItaloCobains</span></a></li><li><a href="https://www.twitter.com/JustItalow"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#twitter"></use></svg> <span class="username">JustItalow</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Bem-vindo ao nosso blog, um espaço dedicado à exploração do fascinante mundo da programação, tecnologia, hacking ético e ciência da computação. Mergulhe conosco em uma jornada repleta de insights e novidades, enquanto compartilhamos nosso conhecimento e paixão por esses campos em constante evolução.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
